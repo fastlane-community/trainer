@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="3" failures="0">
+    <testsuite name="Unit" tests="3" failures="0">
+        <testcase classname="Unit/testExample()" name="testExample()">
+        </testcase>
+        <testcase classname="Unit/testExample2()" name="testExample2()">
+        </testcase>
+        <testcase classname="Unit/testPerformanceExample()" name="testPerformanceExample()">
+        </testcase>
+    </testsuite>
+</testsuites>

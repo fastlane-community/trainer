@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="3" failures="1">
+    <testsuite name="Unit" tests="3" failures="1">
+        <testcase classname="Unit/testExample()" name="testExample()">
+        </testcase>
+        <testcase classname="Unit/testExample2()" name="testExample2()">
+            <failure message="XCTAssertTrue failed - /Users/krausefx/Developer/themoji/Unit/Unit.swift:34">
+            </failure>
+        </testcase>
+        <testcase classname="Unit/testPerformanceExample()" name="testPerformanceExample()">
+        </testcase>
+    </testsuite>
+</testsuites>

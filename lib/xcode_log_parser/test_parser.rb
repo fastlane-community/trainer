@@ -17,6 +17,11 @@ module XcodeLogParser
       parse_content
     end
 
+    # Returns the JUnit report as String
+    def to_junit
+      JunitGenerator.new(self.data).generate
+    end
+
     private
 
     def ensure_file_valid!
