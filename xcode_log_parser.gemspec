@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["lib/**/*"] + %w( README.md LICENSE )
 
-  # spec.executables   = %w(fastlane-credentials) # TODO
+  spec.executables   = %w(xcode_log_parser)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 

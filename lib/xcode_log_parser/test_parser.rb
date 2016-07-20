@@ -12,6 +12,7 @@ module XcodeLogParser
 
       self.file_content = File.read(path)
       self.raw_json = Plist.parse_xml(self.file_content)
+      return if self.raw_json["FormatVersion"].to_s.length == 0 # maybe that's a useless plist file
 
       ensure_file_valid!
       parse_content
@@ -26,7 +27,7 @@ module XcodeLogParser
 
     def ensure_file_valid!
       format_version = self.raw_json["FormatVersion"]
-      UI.user_error!("Format version #{format_version} is not supported") unless format_version == "1.2"
+      UI.user_error!("Format version '#{format_version}' is not supported") unless format_version == "1.2"
     end
 
     # Convert the Hashes and Arrays in something more useful
