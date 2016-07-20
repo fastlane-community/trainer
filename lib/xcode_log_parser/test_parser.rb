@@ -56,7 +56,7 @@ module XcodeLogParser
       end
 
       self.data = self.raw_json["TestableSummaries"].collect do |testable_summary|
-        {
+        summary_row = {
           project_path: testable_summary["ProjectPath"],
           target_name: testable_summary["TargetName"],
           test_name: testable_summary["TestName"],
@@ -74,13 +74,17 @@ module XcodeLogParser
                   file_name: current_failure['FileName'],
                   line_number: current_failure['LineNumber'],
                   message: current_failure['Message'],
-                  performance_failure: current_failure['PerformanceFailure']
+                  performance_failure: current_failure['PerformanceFailure'],
+                  failure_message: "#{current_failure['Message']}#{current_failure['FileName']}:#{current_failure['LineNumber']}"
                 }
               end
             end
             current_row
           end
         }
+        summary_row[:number_of_tests] = summary_row[:tests].count
+        summary_row[:number_of_failures] = summary_row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
+        summary_row
       end
     end
   end

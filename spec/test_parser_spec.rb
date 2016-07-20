@@ -45,7 +45,8 @@ describe XcodeLogParser do
                                           file_name: "/Users/krausefx/Developer/themoji/Unit/Unit.swift",
                                           line_number: 34,
                                           message: "XCTAssertTrue failed - ",
-                                          performance_failure: false
+                                          performance_failure: false,
+                                          failure_message: "XCTAssertTrue failed - /Users/krausefx/Developer/themoji/Unit/Unit.swift:34"
                                         }
                                       ]
                                     },
@@ -56,7 +57,9 @@ describe XcodeLogParser do
                                       status: "Success",
                                       guid: "777C5F98-023B-4F99-B98D-20DDE724160E"
                                     }
-                                  ]
+                                  ],
+                                  number_of_tests: 3,
+                                  number_of_failures: 1
                                 }
                               ])
       end
