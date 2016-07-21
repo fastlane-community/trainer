@@ -10,7 +10,7 @@ describe XcodeLogParser do
       it "raises an error if FormatVersion is not supported" do
         expect do
           XcodeLogParser::TestParser.new("spec/fixtures/InvalidVersionMismatch.plist")
-        end.to raise_error("Format version 0.9 is not supported")
+        end.to raise_error("Format version '0.9' is not supported")
       end
 
       it "loads a file without throwing an error" do
@@ -29,6 +29,7 @@ describe XcodeLogParser do
                                   tests: [
                                     {
                                       identifier: "Unit/testExample()",
+                                      test_group: "Unit",
                                       name: "testExample()",
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Success",
@@ -36,6 +37,7 @@ describe XcodeLogParser do
                                     },
                                     {
                                       identifier: "Unit/testExample2()",
+                                      test_group: "Unit",
                                       name: "testExample2()",
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Failure",
@@ -52,6 +54,7 @@ describe XcodeLogParser do
                                     },
                                     {
                                       identifier: "Unit/testPerformanceExample()",
+                                      test_group: "Unit",
                                       name: "testPerformanceExample()",
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Success",

@@ -69,6 +69,7 @@ module XcodeLogParser
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
             current_row = {
               identifier: current_test["TestIdentifier"],
+              test_group: current_test["TestIdentifier"].split("/")[0..-2].join("."),
               name: current_test["TestName"],
               object_class: current_test["TestObjectClass"],
               status: current_test["TestStatus"],

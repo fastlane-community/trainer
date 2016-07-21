@@ -17,11 +17,7 @@ rake install
 
 ```
 cd [project]
-xcodebuild -workspace [name].xcworkspace \
-     -scheme "[scheme]" \
-     -sdk iphonesimulator \
-     -destination 'platform=iOS Simulator,name=iPhone 6,OS=9.3' \
-     -derivedDataPath './output'
+scan --derived_data_path "output"
 ```
 
 ### Convert the plist files to junit
