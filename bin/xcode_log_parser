@@ -3,8 +3,4 @@ $LOAD_PATH.push File.expand_path("../../lib", __FILE__)
 
 require "xcode_log_parser"
 
-Dir["./**/Logs/Test/*TestSummaries.plist"].each do |path|
-  to_path = path.gsub(".plist", ".junit")
-  File.write(to_path, XcodeLogParser::TestParser.new(path).to_junit)
-  puts "Successfully generated '#{to_path}'"
-end
+XcodeLogParser::TestParser.auto_convert(".")

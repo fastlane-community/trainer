@@ -6,6 +6,19 @@ module XcodeLogParser
 
     attr_accessor :raw_json
 
+    def self.auto_convert(containing_dir)
+      files = Dir["#{containing_dir}/**/Logs/Test/*TestSummaries.plist"]
+      files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
+      files += Dir["#{containing_dir}/*TestSummaries.plist"]
+
+      return files.collect do |path|
+        to_path = path.gsub(".plist", ".junit")
+        File.write(to_path, XcodeLogParser::TestParser.new(path).to_junit)
+        puts "Successfully generated '#{to_path}'"
+        to_path
+      end
+    end
+
     def initialize(path)
       path = File.expand_path(path)
       UI.user_error!("File not found at path '#{path}'") unless File.exist?(path)
