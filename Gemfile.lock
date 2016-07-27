@@ -21,7 +21,7 @@ GEM
       security
     diff-lcs (1.2.5)
     excon (0.45.4)
-    fastlane_core (0.48.1)
+    fastlane_core (0.48.3)
       babosa
       colored
       commander (= 4.3.5)
@@ -36,7 +36,7 @@ GEM
       terminal-table (~> 1.4.5)
     gh_inspector (1.0.2)
     highline (1.7.8)
-    json (2.0.1)
+    json (2.0.2)
     method_source (0.8.2)
     multi_json (1.12.1)
     parser (2.3.1.2)
