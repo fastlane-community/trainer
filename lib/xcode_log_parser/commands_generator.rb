@@ -6,7 +6,7 @@ module XcodeLogParser
   class CommandsGenerator
     include Commander::Methods
 
-    def self.start      
+    def self.start
       self.new.run
     end
 
