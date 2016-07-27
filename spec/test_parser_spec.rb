@@ -18,6 +18,14 @@ describe XcodeLogParser do
       end
     end
 
+    describe "#auto_convert" do
+      it "raises an error if no files were found" do
+        expect do
+          XcodeLogParser::TestParser.auto_convert("bin")
+        end.to raise_error("No test result files found in directory 'bin'")
+      end
+    end
+
     describe "Stores the data in a useful format" do
       it "works as expected" do
         tp = XcodeLogParser::TestParser.new("spec/fixtures/Valid1.plist")

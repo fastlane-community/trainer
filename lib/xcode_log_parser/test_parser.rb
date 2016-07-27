@@ -11,6 +11,8 @@ module XcodeLogParser
       files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
       files += Dir["#{containing_dir}/*TestSummaries.plist"]
 
+      UI.user_error!("No test result files found in directory '#{containing_dir}'") if files.empty?
+
       return files.collect do |path|
         to_path = path.gsub(".plist", ".junit")
         File.write(to_path, XcodeLogParser::TestParser.new(path).to_junit)
