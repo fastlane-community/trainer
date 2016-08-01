@@ -1,6 +1,6 @@
 module Fastlane
   module Helper
-    class XcodeLogParserHelper
+    class TrainerHelper
     end
   end
 end

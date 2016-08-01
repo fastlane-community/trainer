@@ -1,3 +1,0 @@
-lane :test do
-  xcode_log_parser
-end

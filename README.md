@@ -1,4 +1,4 @@
-# xcode_log_parser
+# trainer
 
 This is an alternative approach to generate JUnit files for your CI (e.g. Jenkins) without parsing the `xcodebuild` output, but the resulting Xcode `plist` files. 
 
@@ -6,18 +6,18 @@ This is an alternative approach to generate JUnit files for your CI (e.g. Jenkin
 
 Add this to your `Gemfile` 
 ```
-gem xcode_log_parser
+gem trainer
 ```
 and run
 ```
 bundle install
 ```
 
-Alternatively you can install the gem system-wide using `sudo gem install xcode_log_parser`.
+Alternatively you can install the gem system-wide using `sudo gem install trainer`.
 
 ## Usage
 
-If you use `fastlane`, check out the official [fastlane plugin](https://github.com/KrauseFx/xcode_log_parser/tree/master/fastlane-plugin-xcode_log_parser#readme) on how to use `xcode_log_parser` in `fastlane`.
+If you use `fastlane`, check out the official [fastlane plugin](https://github.com/KrauseFx/trainer/tree/master/fastlane-plugin-trainer#readme) on how to use `trainer` in `fastlane`.
 
 #### Run tests
 
@@ -29,17 +29,17 @@ scan --derived_data_path "output"
 #### Convert the plist files to junit
 
 ```
-xcode_log_parser
+trainer
 ```
 
 You can also pass a custom directory containing the plist files
 
 ```
-xcode_log_parser --path ./something
+trainer --path ./something
 ```
 
 For more information run
 
 ```
-xcode_log_parser --help
+trainer --help
 ````

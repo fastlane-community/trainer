@@ -1,34 +1,34 @@
-describe XcodeLogParser do
-  describe XcodeLogParser::TestParser do
+describe Trainer do
+  describe Trainer::TestParser do
     describe "Loading a file" do
       it "raises an error if the file doesn't exist" do
         expect do
-          XcodeLogParser::TestParser.new("notExistent")
+          Trainer::TestParser.new("notExistent")
         end.to raise_error(/File not found at path/)
       end
 
       it "raises an error if FormatVersion is not supported" do
         expect do
-          XcodeLogParser::TestParser.new("spec/fixtures/InvalidVersionMismatch.plist")
+          Trainer::TestParser.new("spec/fixtures/InvalidVersionMismatch.plist")
         end.to raise_error("Format version '0.9' is not supported")
       end
 
       it "loads a file without throwing an error" do
-        XcodeLogParser::TestParser.new("spec/fixtures/Valid1.plist")
+        Trainer::TestParser.new("spec/fixtures/Valid1.plist")
       end
     end
 
     describe "#auto_convert" do
       it "raises an error if no files were found" do
         expect do
-          XcodeLogParser::TestParser.auto_convert("bin")
+          Trainer::TestParser.auto_convert("bin")
         end.to raise_error("No test result files found in directory 'bin'")
       end
     end
 
     describe "Stores the data in a useful format" do
       it "works as expected" do
-        tp = XcodeLogParser::TestParser.new("spec/fixtures/Valid1.plist")
+        tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
         expect(tp.data).to eq([
                                 {
                                   project_path: "Themoji.xcodeproj",

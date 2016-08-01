@@ -1,23 +1,23 @@
-# xcode_log_parser plugin
+# trainer plugin
 
-[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-xcode_log_parser)
+[![fastlane Plugin Badge](https://rawcdn.githack.com/fastlane/fastlane/master/fastlane/assets/plugin-badge.svg)](https://rubygems.org/gems/fastlane-plugin-trainer)
 
 ## Getting Started
 
-This project is a [fastlane](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-xcode_log_parser`, add it to your project by running:
+This project is a [fastlane](https://github.com/fastlane/fastlane) plugin. To get started with `fastlane-plugin-trainer`, add it to your project by running:
 
 ```bash
-fastlane add_plugin xcode_log_parser
+fastlane add_plugin trainer
 ```
 
-## About `xcode_log_parser`
+## About `trainer`
 
-To use `xcode_log_parser` in your lane, add the following to your `Fastfile`:
+To use `trainer` in your lane, add the following to your `Fastfile`:
 
 ```ruby
 lane :test do
   scan(workspace: "MyApp.xcworkspace")
-  xcode_log_parser
+  trainer
 end
 ```
 

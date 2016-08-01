@@ -1,4 +1,4 @@
-module XcodeLogParser
+module Trainer
   class TestParser
     attr_accessor :data
 
@@ -15,7 +15,7 @@ module XcodeLogParser
 
       return files.collect do |path|
         to_path = path.gsub(".plist", ".junit")
-        File.write(to_path, XcodeLogParser::TestParser.new(path).to_junit)
+        File.write(to_path, Trainer::TestParser.new(path).to_junit)
         puts "Successfully generated '#{to_path}'"
         to_path
       end

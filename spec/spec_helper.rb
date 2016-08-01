@@ -1,4 +1,4 @@
-require 'xcode_log_parser'
+require 'trainer'
 
 # This module is only used to check the environment is currently a testing env
 module SpecHelper

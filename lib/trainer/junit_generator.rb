@@ -1,4 +1,4 @@
-module XcodeLogParser
+module Trainer
   class JunitGenerator
     attr_accessor :results
 
@@ -11,7 +11,7 @@ module XcodeLogParser
       # And http://nelsonwells.net/2012/09/how-jenkins-ci-parses-and-displays-junit-output/
       # And http://windyroad.com.au/dl/Open%20Source/JUnit.xsd
 
-      lib_path = FastlaneCore::Helper.gem_path("xcode_log_parser")
+      lib_path = FastlaneCore::Helper.gem_path("trainer")
       xml_path = File.join(lib_path, "lib/assets/junit.xml.erb")
       xml = ERB.new(File.read(xml_path), nil, '<>').result(binding) # http://www.rrn.dk/rubys-erb-templating-system
 

@@ -1,15 +1,15 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'xcode_log_parser/version'
+require 'trainer/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "xcode_log_parser"
-  spec.version       = XcodeLogParser::VERSION
+  spec.name          = "trainer"
+  spec.version       = Trainer::VERSION
   spec.authors       = ["Felix Krause"]
   spec.email         = ["fastlane@krausefx.com"]
-  spec.summary       = XcodeLogParser::DESCRIPTION
-  spec.description   = XcodeLogParser::DESCRIPTION
+  spec.summary       = Trainer::DESCRIPTION
+  spec.description   = Trainer::DESCRIPTION
   spec.homepage      = "https://fastlane.tools"
   spec.license       = "MIT"
 
@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["lib/**/*"] + %w( README.md LICENSE )
 
-  spec.executables   = %w(xcode_log_parser)
+  spec.executables   = %w(trainer)
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 

@@ -1,10 +1,10 @@
 module Fastlane
   module Actions
-    class XcodeLogParserAction < Action
+    class TrainerAction < Action
       def self.run(params)
-        require "xcode_log_parser"
+        require "trainer"
 
-        return ::XcodeLogParser::TestParser.auto_convert(params[:path])
+        return ::Trainer::TestParser.auto_convert(params[:path])
       end
 
       def self.description
@@ -22,7 +22,7 @@ module Fastlane
       def self.available_options
         [
           FastlaneCore::ConfigItem.new(key: :path,
-                                  env_name: "XCODE_LOG_PARSER_PATH",
+                                  env_name: "trainer_PATH",
                                description: "Path to the directory containing the plist files",
                              default_value: ".",
                                       type: String)
