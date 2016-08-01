@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.author        = %q{KrauseFx}
   spec.email         = %q{KrauseFx@gmail.com}
 
-  spec.summary       = %q{Convert the Xcode plist log to a JUnit report}
+  spec.summary       = "Convert xcodebuild plist files to JUnit reports"
   spec.homepage      = "https://github.com/KrauseFx/trainer"
   spec.license       = "MIT"
 
