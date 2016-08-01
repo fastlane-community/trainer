@@ -16,10 +16,14 @@ To use `trainer` in your lane, add the following to your `Fastfile`:
 
 ```ruby
 lane :test do
-  scan(workspace: "MyApp.xcworkspace")
+  scan(workspace: "MyApp.xcworkspace",
+       output_types: "",
+       derived_data_path: "/tmp/fastlane/#{Time.now}")
   trainer
 end
 ```
+
+This will generate the JUnit file in the temporary location `/tmp/fastlane_trainer/[time]`. You can specify any path you want, just make sure to have it clean for every run so that your CI system knows which one to pick.
 
 ## Example
 
