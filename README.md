@@ -73,6 +73,12 @@ For more information run
 trainer --help
 ````
 
+### Show the test results right in your pull request
+
+To make it easier for you and your contributors to see the test failures, you should start using [danger](http://danger.systems) with the [danger-junit](https://github.com/orta/danger-junit) plugin
+
+![](https://raw.githubusercontent.com/orta/danger-junit/master/img/example.png)
+
 ### Thanks
 
 After the [lobbying of @steipete](https://twitter.com/steipete/status/753662170848690176) and the comment
