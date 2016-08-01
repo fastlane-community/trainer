@@ -18,7 +18,7 @@ To use `trainer` in your lane, add the following to your `Fastfile`:
 lane :test do
   scan(workspace: "MyApp.xcworkspace",
        output_types: "",
-       derived_data_path: "/tmp/fastlane/#{Time.now}")
+       derived_data_path: "/tmp/fastlane/#{Time.now.to_i}")
   trainer
 end
 ```

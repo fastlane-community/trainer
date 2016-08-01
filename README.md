@@ -20,7 +20,7 @@ Now add the following to your `Fastfile`
 lane :test do
   scan(workspace: "MyApp.xcworkspace",
        output_types: "",
-       derived_data_path: "/tmp/fastlane_trainer/#{Time.now}")
+       derived_data_path: "/tmp/fastlane_trainer/#{Time.now.to_i}")
   trainer
 end
 ```
