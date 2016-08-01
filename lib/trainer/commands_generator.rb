@@ -31,7 +31,7 @@ module Trainer
         c.action do |args, options|
           options = FastlaneCore::Configuration.create(Trainer::Options.available_options, options.__hash__)
           FastlaneCore::PrintTable.print_values(config: options, title: "Summary for trainer #{Trainer::VERSION}") if $verbose
-          Trainer::TestParser.auto_convert(options[:path])
+          Trainer::TestParser.auto_convert(options)
         end
       end
 

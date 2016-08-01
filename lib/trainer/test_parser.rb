@@ -6,7 +6,8 @@ module Trainer
 
     attr_accessor :raw_json
 
-    def self.auto_convert(containing_dir)
+    def self.auto_convert(config)
+      containing_dir = config[:path]
       files = Dir["#{containing_dir}/**/Logs/Test/*TestSummaries.plist"]
       files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
       files += Dir["#{containing_dir}/*TestSummaries.plist"]
@@ -14,7 +15,14 @@ module Trainer
       UI.user_error!("No test result files found in directory '#{containing_dir}'") if files.empty?
 
       return files.collect do |path|
-        to_path = path.gsub(".plist", ".junit")
+        if config[:output_directory]
+          FileUtils.mkdir_p(config[:output_directory])
+          filename = File.basename(path).gsub(".plist", config[:extension])
+          to_path = File.join(config[:output_directory], filename)
+        else
+          to_path = path.gsub(".plist", config[:extension])
+        end
+
         File.write(to_path, Trainer::TestParser.new(path).to_junit)
         puts "Successfully generated '#{to_path}'"
         to_path

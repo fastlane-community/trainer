@@ -4,7 +4,9 @@ module Fastlane
       def self.run(params)
         require "trainer"
 
-        return ::Trainer::TestParser.auto_convert(params[:path])
+        params[:path] = Actions.lane_context[Actions::SharedValues::SCAN_DERIVED_DATA_PATH] if Actions.lane_context[Actions::SharedValues::SCAN_DERIVED_DATA_PATH]
+
+        return ::Trainer::TestParser.auto_convert(params)
       end
 
       def self.description
@@ -20,13 +22,8 @@ module Fastlane
       end
 
       def self.available_options
-        [
-          FastlaneCore::ConfigItem.new(key: :path,
-                                  env_name: "trainer_PATH",
-                               description: "Path to the directory containing the plist files",
-                             default_value: Actions.lane_context[Actions::SharedValues::SCAN_DERIVED_DATA_PATH] || ".",
-                                      type: String)
-        ]
+        require "trainer/options"
+        FastlaneCore::CommanderGenerator.new.generate(::Trainer::Options.available_options)
       end
 
       def self.is_supported?(platform)
