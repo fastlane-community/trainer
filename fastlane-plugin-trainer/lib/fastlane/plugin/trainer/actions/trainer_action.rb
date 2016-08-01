@@ -24,7 +24,7 @@ module Fastlane
           FastlaneCore::ConfigItem.new(key: :path,
                                   env_name: "trainer_PATH",
                                description: "Path to the directory containing the plist files",
-                             default_value: ".",
+                             default_value: Actions.lane_context[Actions::SharedValues::SCAN_DERIVED_DATA_PATH] || ".",
                                       type: String)
         ]
       end
