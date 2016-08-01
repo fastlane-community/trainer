@@ -43,3 +43,11 @@ For more information run
 ```
 trainer --help
 ````
+
+### Thanks
+
+After the [lobbying of @steipete](https://twitter.com/steipete/status/753662170848690176) and the comment
+
+> How does Xcode Server parse the results?
+
+I started investigating alternative approaches on how to parse test results.
