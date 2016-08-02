@@ -7,6 +7,9 @@ module Trainer
     attr_accessor :raw_json
 
     def self.auto_convert(config)
+      FastlaneCore::PrintTable.print_values(config: config,
+                                             title: "Summary for trainer #{Trainer::VERSION}")
+
       containing_dir = config[:path]
       files = Dir["#{containing_dir}/**/Logs/Test/*TestSummaries.plist"]
       files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
