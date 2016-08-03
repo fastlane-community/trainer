@@ -26,9 +26,6 @@ module Trainer
           to_path = path.gsub(".plist", config[:extension])
         end
 
-        puts "#{path}: "
-        puts File.read(path)
-        puts "-"
         File.write(to_path, Trainer::TestParser.new(path).to_junit)
         puts "Successfully generated '#{to_path}'"
         to_path
