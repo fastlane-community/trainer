@@ -10,7 +10,7 @@ describe Trainer do
       it "raises an error if FormatVersion is not supported" do
         expect do
           Trainer::TestParser.new("spec/fixtures/InvalidVersionMismatch.plist")
-        end.to raise_error("Format version '0.9' is not supported")
+        end.to raise_error("Format version '0.9' is not supported, must be 1.1, 1.2")
       end
 
       it "loads a file without throwing an error" do

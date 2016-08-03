@@ -55,7 +55,8 @@ module Trainer
 
     def ensure_file_valid!
       format_version = self.raw_json["FormatVersion"]
-      UI.user_error!("Format version '#{format_version}' is not supported") unless format_version == "1.2"
+      supported_versions = ["1.1", "1.2"]
+      UI.user_error!("Format version '#{format_version}' is not supported, must be #{supported_versions.join(', ')}") unless supported_versions.include?(format_version)
     end
 
     # Convert the Hashes and Arrays in something more useful
