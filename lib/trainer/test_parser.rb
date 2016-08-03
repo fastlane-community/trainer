@@ -15,7 +15,9 @@ module Trainer
       files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
       files += Dir["#{containing_dir}/*TestSummaries.plist"]
 
-      UI.user_error!("No test result files found in directory '#{containing_dir}'") if files.empty?
+      if files.empty?
+        UI.user_error!("No test result files found in directory '#{containing_dir}', make sure the file name ends with 'TestSummaries.plist'")
+      end
 
       return files.collect do |path|
         if config[:output_directory]

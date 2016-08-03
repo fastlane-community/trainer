@@ -24,7 +24,7 @@ module Trainer
                                      env_name: "TRAINER_OUTPUT_DIRECTORY",
                                      default_value: nil,
                                      optional: true,
-                                     description: "Directoy in which the xml files should be written to. Same directory as source by default"),
+                                     description: "Directoy in which the xml files should be written to. Same directory as source by default")
       ]
     end
   end
