@@ -16,10 +16,14 @@ To use `trainer` in your lane, add the following to your `Fastfile`:
 
 ```ruby
 lane :test do
-  scan(workspace: "MyApp.xcworkspace",
-       output_types: "",
-       derived_data_path: "/tmp/fastlane/#{Time.now.to_i}")
-  trainer
+    begin
+      scan(workspace: "Themoji.xcworkspace", scheme: "ThemojiUITests", output_types: "")
+    rescue => ex
+      failure = ex
+    end
+
+    trainer(output_directory: "/tmp/fastlane_trainer/#{Time.now.to_i}")
+    raise failure if failure
 end
 ```
 
