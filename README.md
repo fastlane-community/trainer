@@ -20,14 +20,24 @@ Now add the following to your `Fastfile`
 
 ```ruby
 lane :test do
-  scan(workspace: "MyApp.xcworkspace",
-       output_types: "",
-       derived_data_path: "/tmp/fastlane_trainer/#{Time.now.to_i}")
-  trainer
+    begin
+      scan(workspace: "Themoji.xcworkspace", scheme: "ThemojiUITests", output_types: "")
+    rescue => ex
+      failure = ex
+    end
+
+    trainer(output_directory: "/tmp/fastlane_trainer/#{Time.now.to_i}")
+    raise failure if failure
 end
 ```
 
 This will generate the JUnit file in the temporary location `/tmp/fastlane_trainer/[time]`. You can specify any path you want, just make sure to have it clean for every run so that your CI system knows which one to pick.
+
+If you use circle, use the following to automatically publish the JUnit reports
+
+```ruby
+trainer(output_directory: (ENV["CIRCLE_TEST_REPORTS"] || "/tmp"))
+```
 
 For more information, check out the [fastlane plugin docs](fastlane-plugin-trainer#readme).
 
@@ -54,7 +64,7 @@ If you use `fastlane`, check out the official [fastlane plugin](fastlane-plugin-
 
 ```
 cd [project]
-scan --derived_data_path "output"
+scan --derived_data_path "output_dir"
 ```
 
 #### Convert the plist files to junit
