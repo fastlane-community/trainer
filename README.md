@@ -6,11 +6,22 @@
 
 This is an alternative approach to generate JUnit files for your CI (e.g. Jenkins) without parsing the `xcodebuild` output, but using the Xcode `plist` files instead.
 
-The new Xcode beta has a known issue around not properly closing `stdout` ([Radar](https://openradar.appspot.com/27447948)), so you [can't use xcpretty](https://github.com/supermarin/xcpretty/issues/227).
+Some Xcode versions has a known issue around not properly closing `stdout` ([Radar](https://openradar.appspot.com/27447948)), so you [can't use xcpretty](https://github.com/supermarin/xcpretty/issues/227).
 
 `trainer` is a more robust and faster approach to generate JUnit reports for your CI system. 
 
 > By using `trainer`, the Twitter iOS code base now generates JUnit reports 10 times faster.
+
+ | [xcpretty](https://github.com/supermarin/xcpretty) |  trainer
+--------------------------|------------------------------|------------------------------
+Prettify the `xcodebuild` output | :white_check_mark: | :no_entry_sign:
+Generate JUnit reports | :white_check_mark: | :white_check_mark:
+Generate HTML reports | :white_check_mark: | :no_entry_sign:
+Works when the `xcodebuild` output format changed | :no_entry_sign: | :white_check_mark:
+Show test execution duration | :white_check_mark: | :no_entry_sign:
+Speed | :car: | :rocket:
+
+[xcpretty](https://github.com/supermarin/xcpretty) is a great piece of software that is used across all [fastlane tools](https://fastlane.tools). `trainer` was built to have the minimum code to generate JUnit reports for your CI system.
 
 ## Use with [fastlane](https://fastlane.tools)
 
@@ -102,3 +113,5 @@ After the [lobbying of @steipete](https://twitter.com/steipete/status/7536621708
 > How does Xcode Server parse the results?
 
 I started investigating alternative approaches on how to parse test results.
+
+For more information about the plist files that are being used, check out [Michele's blog post](http://michele.io/test-logs-in-xcode).
