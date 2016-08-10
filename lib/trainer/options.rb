@@ -9,7 +9,11 @@ module Trainer
                                      description: "Path to the directory that should be converted",
                                      verify_block: proc do |value|
                                        v = File.expand_path(value.to_s)
-                                       UI.user_error!("Path '#{v}' is not a directory or can't be found") unless File.directory?(v)
+                                       if v.end_with?(".plist")
+                                         UI.user_error!("Can't find file at path #{v}") unless File.exist?(v)
+                                       else
+                                         UI.user_error!("Path '#{v}' is not a directory or can't be found") unless File.directory?(v)
+                                       end
                                      end),
         FastlaneCore::ConfigItem.new(key: :extension,
                                      short_option: "-e",

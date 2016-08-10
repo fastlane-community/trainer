@@ -21,7 +21,7 @@ GEM
       security
     diff-lcs (1.2.5)
     excon (0.45.4)
-    fastlane_core (0.49.0)
+    fastlane_core (0.50.0)
       babosa
       colored
       commander (= 4.3.5)

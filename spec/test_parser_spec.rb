@@ -27,6 +27,13 @@ describe Trainer do
     end
 
     describe "Stores the data in a useful format" do
+      describe "#tests_successful?" do
+        it "returns false if tests failed" do
+          tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
+          expect(tp.tests_successful?).to eq(false)
+        end
+      end
+
       it "works as expected" do
         tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
         expect(tp.data).to eq([
