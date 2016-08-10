@@ -1,0 +1,12 @@
+machine:
+  ruby:
+    version:
+      2.1.3
+dependencies:
+  override:
+    - bundle check --path=vendor/bundle || bundle install --path=vendor/bundle --jobs=4 --retry=4
+  cache_directories:
+    - vendor/bundle
+test:
+  override:
+    - bundle exec rspec
