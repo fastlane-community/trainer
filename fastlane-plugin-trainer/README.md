@@ -16,18 +16,21 @@ To use `trainer` in your lane, add the following to your `Fastfile`:
 
 ```ruby
 lane :test do
-    begin
-      scan(workspace: "Themoji.xcworkspace", scheme: "ThemojiUITests", output_types: "")
-    rescue => ex
-      failure = ex
-    end
+  scan(scheme: "ThemojiUITests", 
+       output_types: "", 
+       fail_build: false)
 
-    trainer(output_directory: "/tmp/fastlane_trainer/#{Time.now.to_i}")
-    raise failure if failure
+  trainer(output_directory: ".")
 end
 ```
 
-This will generate the JUnit file in the temporary location `/tmp/fastlane_trainer/[time]`. You can specify any path you want, just make sure to have it clean for every run so that your CI system knows which one to pick.
+This will generate the JUnit file in the current directory. You can specify any path you want, just make sure to have it clean for every run so that your CI system knows which one to pick.
+
+If you use circle, use the following to automatically publish the JUnit reports
+
+```ruby
+trainer(output_directory: ENV["CIRCLE_TEST_REPORTS"])
+```
 
 ## Example
 
