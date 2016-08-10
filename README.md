@@ -35,8 +35,7 @@ Now add the following to your `Fastfile`
 
 ```ruby
 lane :test do
-  scan(workspace: "Themoji.xcworkspace", 
-       scheme: "ThemojiUITests", 
+  scan(scheme: "ThemojiUITests", 
        output_types: "", 
        fail_build: false)
 
