@@ -104,7 +104,7 @@ trainer --help
 
 To make it easier for you and your contributors to see the test failures, you should start using [danger](http://danger.systems) with the [danger-junit](https://github.com/orta/danger-junit) plugin
 
-![](https://raw.githubusercontent.com/orta/danger-junit/master/img/example.png)
+![](assets/danger-output.png)
 
 ### Thanks
 
