@@ -23,6 +23,8 @@ Speed | :car: | :rocket:
 
 [xcpretty](https://github.com/supermarin/xcpretty) is a great piece of software that is used across all [fastlane tools](https://fastlane.tools). `trainer` was built to have the minimum code to generate JUnit reports for your CI system.
 
+More information about the why `trainer` is useful can be found on [my blog](https://krausefx.com/blog/trainer-the-simplest-way-to-generate-a-junit-report-of-your-ios-tests).
+
 ## Use with [fastlane](https://fastlane.tools)
 
 Update to the latest [fastlane](https://fastlane.tools) and run
