@@ -99,7 +99,7 @@ trainer --help
 
 ### Show the test results right in your pull request
 
-To make it easier for you and your contributors to see the test failures, you should start using [danger](http://danger.systems) with the [danger-junit](https://github.com/orta/danger-junit) plugin
+To make it easier for you and your contributors to see the test failures, you can use [danger](http://danger.systems) with the [danger-junit](https://github.com/orta/danger-junit) plugin to automatically post the test failures on the GitHub PR. 
 
 ![](assets/danger-output.png)
 
