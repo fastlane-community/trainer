@@ -7,6 +7,14 @@
 <testsuites tests="<%= number_of_tests %>" failures="<%= number_of_failures %>">
   <% @results.each do |testsuite| %>
     <testsuite name=<%= testsuite[:target_name].encode(:xml => :attr) %> tests="<%= testsuite[:number_of_tests] %>" failures="<%= testsuite[:number_of_failures] %>" time="<%= testsuite[:duration] %>">
+    <testsuite name=<%= testsuite[:target_name].encode(:xml => :attr) %> tests="<%= testsuite[:number_of_tests] %>" failures="<%= testsuite[:number_of_failures] %>">
+        <properties>
+            <property name="RunDestination.Name" value="<%= testsuite[:run_destination][:name] %>"/>
+            <property name="RunDestination.TargetArchitecture" value="<%= testsuite[:run_destination][:target_architecture] %>"/>
+            <property name="RunDestination.TargetDevice.Identifier" value="<%= testsuite[:run_destination][:target_device][:identifier] %>"/>
+            <property name="RunDestination.TargetDevice.Name" value="<%= testsuite[:run_destination][:target_device][:name] %>"/>
+            <property name="RunDestination.TargetDevice.OperatingSystemVersion" value="<%= testsuite[:run_destination][:target_device][:operating_system_version] %>"/>
+        </properties>
       <% testsuite[:tests].each do |test| %>
         <testcase classname=<%= test[:test_group].encode(:xml => :attr) %> name=<%= test[:name].encode(:xml => :attr) %> time="<%= test[:duration] %>">
           <% (test[:failures] || []).each do |failure| %>

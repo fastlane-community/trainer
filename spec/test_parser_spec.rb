@@ -42,6 +42,15 @@ describe Trainer do
                                   target_name: "Unit",
                                   test_name: "Unit",
                                   duration: 0.4,
+                                  run_destination: {
+                                    name: "iPhone 6",
+                                    target_architecture: "x86_64",
+                                    target_device: {
+                                      identifier: "C506E86B-40D9-43D2-95FB-AAAADF799AAB",
+                                      name: "iPhone 6",
+                                      operating_system_version: "9.3"
+                                    }
+                                  },
                                   tests: [
                                     {
                                       identifier: "Unit/testExample()",
