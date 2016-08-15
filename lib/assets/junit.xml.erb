@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<% number_of_tests = 0 %>
-<% number_of_failures = 0 %>
-<% @results.each { |a| number_of_tests += a[:number_of_tests] } %>
-<% @results.each { |a| number_of_failures += a[:number_of_failures] } %>
+<% number_of_tests = @results.map {|r| r[:number_of_tests] }.reduce(:+) %>
+<% number_of_failures = @results.map {|r| r[:number_of_failures] }.reduce(:+) %>
 
 <testsuites tests="<%= number_of_tests %>" failures="<%= number_of_failures %>">
   <% @results.each do |testsuite| %>
