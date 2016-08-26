@@ -107,22 +107,22 @@
 			<array>
 				<dict>
 					<key>Duration</key>
-					<real>0.2951509952545166</real>
+					<real>0.4</real>
 					<key>Subtests</key>
 					<array>
 						<dict>
 							<key>Duration</key>
-							<real>0.29422104358673096</real>
+							<real>0.4</real>
 							<key>Subtests</key>
 							<array>
 								<dict>
 									<key>Duration</key>
-									<real>0.29356402158737183</real>
+									<real>0.4</real>
 									<key>Subtests</key>
 									<array>
 										<dict>
 											<key>Duration</key>
-											<real>0.0017129778861999512</real>
+											<real>0.1</real>
 											<key>TestIdentifier</key>
 											<string>Unit/testExample()</string>
 											<key>TestName</key>
@@ -136,7 +136,7 @@
 										</dict>
 										<dict>
 											<key>Duration</key>
-											<real>0.00030595064163208008</real>
+											<real>0.1</real>
 											<key>TestIdentifier</key>
 											<string>Unit/testExample2()</string>
 											<key>TestName</key>
@@ -150,7 +150,7 @@
 										</dict>
 										<dict>
 											<key>Duration</key>
-											<real>0.29037696123123169</real>
+											<real>0.1</real>
 											<key>PerformanceMetrics</key>
 											<array>
 												<dict>
@@ -161,21 +161,21 @@
 													<key>MaxPercentRelativeStandardDeviation</key>
 													<integer>10</integer>
 													<key>MaxRegression</key>
-													<real>0.10000000000000001</real>
+													<real>0.1</real>
 													<key>MaxStandardDeviation</key>
-													<real>0.10000000000000001</real>
+													<real>0.1</real>
 													<key>Measurements</key>
 													<array>
 														<real>0.021794693</real>
-														<real>0.00055730899999999997</real>
-														<real>0.00055241000000000003</real>
-														<real>0.00055458799999999996</real>
-														<real>0.00055095199999999995</real>
-														<real>0.0012515930000000001</real>
-														<real>0.00088146999999999997</real>
+														<real>0.000557309</real>
+														<real>0.00055241</real>
+														<real>0.000554588</real>
+														<real>0.000550952</real>
+														<real>0.001251593</real>
+														<real>0.00088147</real>
 														<real>0.000487963</real>
 														<real>0.001376592</real>
-														<real>0.00043623400000000002</real>
+														<real>0.000436234</real>
 													</array>
 													<key>Name</key>
 													<string>Time</string>
