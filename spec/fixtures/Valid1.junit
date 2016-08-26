@@ -4,7 +4,7 @@
         <testcase classname="Unit" name="testExample()">
         </testcase>
         <testcase classname="Unit" name="testExample2()">
-            <failure message="XCTAssertTrue failed - /Users/krausefx/Developer/themoji/Unit/Unit.swift:34">
+            <failure message="XCTAssertTrue failed - /Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift:19">
             </failure>
         </testcase>
         <testcase classname="Unit" name="testPerformanceExample()">

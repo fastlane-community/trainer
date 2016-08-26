@@ -38,7 +38,7 @@ describe Trainer do
         tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
         expect(tp.data).to eq([
                                 {
-                                  project_path: "Themoji.xcodeproj",
+                                  project_path: "Trainer.xcodeproj",
                                   target_name: "Unit",
                                   test_name: "Unit",
                                   tests: [
@@ -48,7 +48,7 @@ describe Trainer do
                                       name: "testExample()",
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Success",
-                                      guid: "4A24BFED-03E6-4FBE-BC5E-2D80023C06B4"
+                                      guid: "6840EEB8-3D7A-4B2D-9A45-6955DC11D32B"
                                     },
                                     {
                                       identifier: "Unit/testExample2()",
@@ -56,14 +56,14 @@ describe Trainer do
                                       name: "testExample2()",
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Failure",
-                                      guid: "B6AE5BAD-2F01-4D34-BEC8-6AB07472A13B",
+                                      guid: "B2EB311E-ED8D-4DAD-8AF0-A455A20855DF",
                                       failures: [
                                         {
-                                          file_name: "/Users/krausefx/Developer/themoji/Unit/Unit.swift",
-                                          line_number: 34,
+                                          file_name: "/Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift",
+                                          line_number: 19,
                                           message: "XCTAssertTrue failed - ",
                                           performance_failure: false,
-                                          failure_message: "XCTAssertTrue failed - /Users/krausefx/Developer/themoji/Unit/Unit.swift:34"
+                                          failure_message: "XCTAssertTrue failed - /Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift:19"
                                         }
                                       ]
                                     },
@@ -73,7 +73,7 @@ describe Trainer do
                                       name: "testPerformanceExample()",
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Success",
-                                      guid: "777C5F98-023B-4F99-B98D-20DDE724160E"
+                                      guid: "72D0B210-939D-4751-966F-986B6CB2660C"
                                     }
                                   ],
                                   number_of_tests: 3,
