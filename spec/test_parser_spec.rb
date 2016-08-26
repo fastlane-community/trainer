@@ -41,7 +41,7 @@ describe Trainer do
                                   project_path: "Trainer.xcodeproj",
                                   target_name: "Unit",
                                   test_name: "Unit",
-                                  duration: "0.4",
+                                  duration: 0.4,
                                   tests: [
                                     {
                                       identifier: "Unit/testExample()",
@@ -50,7 +50,7 @@ describe Trainer do
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Success",
                                       guid: "6840EEB8-3D7A-4B2D-9A45-6955DC11D32B",
-                                      duration: "0.1"
+                                      duration: 0.1
                                     },
                                     {
                                       identifier: "Unit/testExample2()",
@@ -59,7 +59,7 @@ describe Trainer do
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Failure",
                                       guid: "B2EB311E-ED8D-4DAD-8AF0-A455A20855DF",
-                                      duration: "0.1",
+                                      duration: 0.1,
                                       failures: [
                                         {
                                           file_name: "/Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift",
@@ -77,7 +77,7 @@ describe Trainer do
                                       object_class: "IDESchemeActionTestSummary",
                                       status: "Success",
                                       guid: "72D0B210-939D-4751-966F-986B6CB2660C",
-                                      duration: "0.2"
+                                      duration: 0.2
                                     }
                                   ],
                                   number_of_tests: 3,
