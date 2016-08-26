@@ -7,7 +7,7 @@
             <failure message="XCTAssertTrue failed - /Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift:19">
             </failure>
         </testcase>
-        <testcase classname="Unit" name="testPerformanceExample()" time="0.4">
+        <testcase classname="Unit" name="testPerformanceExample()" time="0.2">
         </testcase>
     </testsuite>
 </testsuites>
