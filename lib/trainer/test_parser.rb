@@ -78,7 +78,8 @@ module Trainer
         # => [{"Subtests"=>
         #  [{"Subtests"=>
         #     [{"Subtests"=>
-        #        [{"TestIdentifier"=>"Unit/testExample()",
+        #        [{"Duration"=>0.4,
+        #          "TestIdentifier"=>"Unit/testExample()",
         #          "TestName"=>"testExample()",
         #          "TestObjectClass"=>"IDESchemeActionTestSummary",
         #          "TestStatus"=>"Success",
@@ -107,6 +108,7 @@ module Trainer
           project_path: testable_summary["ProjectPath"],
           target_name: testable_summary["TargetName"],
           test_name: testable_summary["TestName"],
+          duration: testable_summary["Tests"].map {|current_test| current_test["Duration"] }.inject(:+).to_s,
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
             current_row = {
               identifier: current_test["TestIdentifier"],
@@ -114,7 +116,8 @@ module Trainer
               name: current_test["TestName"],
               object_class: current_test["TestObjectClass"],
               status: current_test["TestStatus"],
-              guid: current_test["TestSummaryGUID"]
+              guid: current_test["TestSummaryGUID"],
+              duration: current_test["Duration"].to_s
             }
             if current_test["FailureSummaries"]
               current_row[:failures] = current_test["FailureSummaries"].collect do |current_failure|
