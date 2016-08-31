@@ -18,7 +18,7 @@ Prettify the `xcodebuild` output | :white_check_mark: | :no_entry_sign:
 Generate JUnit reports | :white_check_mark: | :white_check_mark:
 Generate HTML reports | :white_check_mark: | :no_entry_sign:
 Works when the `xcodebuild` output format changed | :no_entry_sign: | :white_check_mark:
-Show test execution duration | :white_check_mark: | :no_entry_sign:
+Show test execution duration | :white_check_mark: | :white_check_mark:
 Speed | :car: | :rocket:
 
 [xcpretty](https://github.com/supermarin/xcpretty) is a great piece of software that is used across all [fastlane tools](https://fastlane.tools). `trainer` was built to have the minimum code to generate JUnit reports for your CI system.
