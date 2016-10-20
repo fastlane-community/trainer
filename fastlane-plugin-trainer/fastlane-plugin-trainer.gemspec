@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-trainer'
   spec.version       = Fastlane::Trainer::VERSION
   spec.author        = %q{KrauseFx}
-  spec.email         = %q{KrauseFx@gmail.com}
+  spec.email         = %q{trainer@krausefx.com}
 
   spec.summary       = "Convert xcodebuild plist files to JUnit reports"
   spec.homepage      = "https://github.com/KrauseFx/trainer"
