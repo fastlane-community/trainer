@@ -127,7 +127,7 @@ module Trainer
                   line_number: current_failure['LineNumber'],
                   message: current_failure['Message'],
                   performance_failure: current_failure['PerformanceFailure'],
-                  failure_message: "#{current_failure['Message']}#{current_failure['FileName']}:#{current_failure['LineNumber']}"
+                  failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
                 }
               end
             end
