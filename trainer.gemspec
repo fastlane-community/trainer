@@ -21,7 +21,6 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency 'fastlane_core', ">= 0.50.0", "< 1.0.0"
   spec.add_dependency 'plist', ">= 3.1.0", "< 4.0.0"
 
   # Development only

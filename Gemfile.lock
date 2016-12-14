@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trainer (0.2.0)
+    trainer (0.3.0)
       fastlane_core (>= 0.50.0, < 1.0.0)
       plist (>= 3.1.0, < 4.0.0)
 
@@ -12,7 +12,7 @@ GEM
     babosa (1.0.2)
     coderay (1.1.1)
     colored (1.2)
-    commander (4.3.5)
+    commander (4.4.0)
       highline (~> 1.7.2)
     credentials_manager (0.16.0)
       colored
@@ -21,10 +21,10 @@ GEM
       security
     diff-lcs (1.2.5)
     excon (0.45.4)
-    fastlane_core (0.50.0)
+    fastlane_core (0.50.3)
       babosa
       colored
-      commander (= 4.3.5)
+      commander (>= 4.4.0, <= 5.0.0)
       credentials_manager (>= 0.16.0, < 1.0.0)
       excon (~> 0.45.0)
       gh_inspector (>= 1.0.1, < 2.0.0)
