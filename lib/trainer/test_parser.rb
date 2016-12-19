@@ -13,9 +13,7 @@ module Trainer
                                              title: "Summary for trainer #{Trainer::VERSION}")
 
       containing_dir = config[:path]
-      files = Dir["#{containing_dir}/**/Logs/Test/*TestSummaries.plist"]
-      files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
-      files += Dir["#{containing_dir}/*TestSummaries.plist"]
+      files = Dir["#{containing_dir}/**/*TestSummaries.plist"]
       files += Dir[containing_dir] if containing_dir.end_with?(".plist") # if it's the exact path to a plist file
 
       if files.empty?
