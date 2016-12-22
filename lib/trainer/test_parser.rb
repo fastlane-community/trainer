@@ -103,16 +103,20 @@ module Trainer
     # Convert the Hashes and Arrays in something more useful
     def parse_content
       plist_run_destination = self.raw_json["RunDestination"]
-      plist_target_device = plist_run_destination["TargetDevice"]
-      run_destination = {
-        name: plist_run_destination["Name"],
-        target_architecture: plist_run_destination["TargetArchitecture"],
-        target_device: {
-          identifier: plist_target_device["Identifier"],
-          name: plist_target_device["Name"],
-          operating_system_version: plist_target_device["OperatingSystemVersion"]
+      if plist_run_destination
+        plist_target_device = plist_run_destination["TargetDevice"]
+        run_destination = {
+          name: plist_run_destination["Name"],
+          target_architecture: plist_run_destination["TargetArchitecture"],
+          target_device: {
+            identifier: plist_target_device["Identifier"],
+            name: plist_target_device["Name"],
+            operating_system_version: plist_target_device["OperatingSystemVersion"]
+          }
         }
-      }
+      else
+        run_destination = nil
+      end
 
       self.data = self.raw_json["TestableSummaries"].collect do |testable_summary|
         summary_row = {

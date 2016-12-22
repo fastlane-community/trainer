@@ -5,9 +5,14 @@
 <testsuites tests="<%= number_of_tests %>" failures="<%= number_of_failures %>">
   <% @results.each do |testsuite| %>
     <% run_destination = testsuite[:run_destination] %>
-    <% target_device = run_destination[:target_device] %>
-    <% testsuite_name = "#{testsuite[:target_name]} - #{run_destination[:name]} (#{target_device[:operating_system_version]})" %>
+    <% if run_destination %>
+      <% target_device = run_destination[:target_device] %>
+      <% testsuite_name = "#{testsuite[:target_name]} - #{run_destination[:name]} (#{target_device[:operating_system_version]})" %>
+    <% else %>
+      <% testsuite_name = testsuite[:target_name] %>
+    <% end %>
     <testsuite name=<%= testsuite_name.encode(:xml => :attr) %> tests="<%= testsuite[:number_of_tests] %>" failures="<%= testsuite[:number_of_failures] %>" time="<%= testsuite[:duration] %>">
+      <% if run_destination %>
         <properties>
             <property name="RunDestination.Name" value="<%= run_destination[:name] %>"/>
             <property name="RunDestination.TargetArchitecture" value="<%= run_destination[:target_architecture] %>"/>
@@ -15,6 +20,7 @@
             <property name="RunDestination.TargetDevice.Name" value="<%= target_device[:name] %>"/>
             <property name="RunDestination.TargetDevice.OperatingSystemVersion" value="<%= target_device[:operating_system_version] %>"/>
         </properties>
+      <% end %>
       <% testsuite[:tests].each do |test| %>
         <testcase classname=<%= test[:test_group].encode(:xml => :attr) %> name=<%= test[:name].encode(:xml => :attr) %> time="<%= test[:duration] %>">
           <% (test[:failures] || []).each do |failure| %>
