@@ -7,11 +7,14 @@
     <% run_destination = testsuite[:run_destination] %>
     <% if run_destination %>
       <% target_device = run_destination[:target_device] %>
-      <% testsuite_name = "#{testsuite[:target_name]} - #{run_destination[:name]} (#{target_device[:operating_system_version]})" %>
+      <% package = "#{run_destination[:name]} (#{target_device[:operating_system_version]})" %>
+      <% package_attr = "package=#{ package.encode(:xml => :attr) }" %>
+      <% testsuite_name = "#{testsuite[:target_name]} - #{package}" %>
     <% else %>
+      <% package_attr = "" %>
       <% testsuite_name = testsuite[:target_name] %>
     <% end %>
-    <testsuite name=<%= testsuite_name.encode(:xml => :attr) %> tests="<%= testsuite[:number_of_tests] %>" failures="<%= testsuite[:number_of_failures] %>" time="<%= testsuite[:duration] %>">
+    <testsuite <%= package_attr %> name=<%= testsuite_name.encode(:xml => :attr) %> tests="<%= testsuite[:number_of_tests] %>" failures="<%= testsuite[:number_of_failures] %>" time="<%= testsuite[:duration] %>">
       <% if run_destination %>
         <properties>
             <property name="RunDestination.Name" value="<%= run_destination[:name] %>"/>

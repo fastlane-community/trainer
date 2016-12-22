@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites tests="3" failures="1">
-    <testsuite name="Unit - iPhone 6 (9.3)" tests="3" failures="1" time="0.4">
+    <testsuite package="iPhone SE (10.0)" name="Unit - iPhone SE (10.0)" tests="3" failures="1" time="0.4">
         <properties>
             <property name="RunDestination.Name" value="iPhone 6"/>
             <property name="RunDestination.TargetArchitecture" value="x86_64"/>
