@@ -1,45 +1,17 @@
 PATH
   remote: .
   specs:
-    trainer (0.3.0)
-      fastlane_core (>= 0.50.0, < 1.0.0)
+    trainer (0.4.0)
       plist (>= 3.1.0, < 4.0.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.3.0)
-    babosa (1.0.2)
     coderay (1.1.1)
-    colored (1.2)
-    commander (4.4.0)
-      highline (~> 1.7.2)
-    credentials_manager (0.16.0)
-      colored
-      commander (>= 4.3.5)
-      highline (>= 1.7.1)
-      security
     diff-lcs (1.2.5)
-    excon (0.45.4)
-    fastlane_core (0.50.3)
-      babosa
-      colored
-      commander (>= 4.4.0, <= 5.0.0)
-      credentials_manager (>= 0.16.0, < 1.0.0)
-      excon (~> 0.45.0)
-      gh_inspector (>= 1.0.1, < 2.0.0)
-      highline (>= 1.7.2)
-      json
-      multi_json
-      plist (~> 3.1)
-      rubyzip (~> 1.1.6)
-      terminal-table (~> 1.4.5)
-    gh_inspector (1.0.2)
-    highline (1.7.8)
-    json (2.0.2)
     method_source (0.8.2)
-    multi_json (1.12.1)
-    parser (2.3.1.2)
+    parser (2.3.3.1)
       ast (~> 2.2)
     plist (3.2.0)
     powerpack (0.1.1)
@@ -48,7 +20,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     rainbow (2.1.0)
-    rake (11.2.2)
+    rake (12.0.0)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -68,11 +40,8 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
-    rubyzip (1.1.7)
-    security (0.1.3)
     slop (3.6.0)
-    terminal-table (1.4.5)
-    unicode-display_width (1.1.0)
+    unicode-display_width (1.1.2)
 
 PLATFORMS
   ruby
@@ -86,4 +55,4 @@ DEPENDENCIES
   trainer!
 
 BUNDLED WITH
-   1.12.5
+   1.13.6
