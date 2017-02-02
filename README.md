@@ -78,7 +78,7 @@ If you use `fastlane`, check out the official [fastlane plugin](fastlane-plugin-
 
 ```
 cd [project]
-scan --derived_data_path "output_dir"
+fastlane scan --derived_data_path "output_dir"
 ```
 
 #### Convert the plist files to junit
