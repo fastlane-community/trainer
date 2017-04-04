@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trainer (0.5.0)
+    trainer (0.6.0)
       plist (>= 3.1.0, < 4.0.0)
 
 GEM
@@ -55,4 +55,4 @@ DEPENDENCIES
   trainer!
 
 BUNDLED WITH
-   1.13.6
+   1.14.3
