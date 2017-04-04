@@ -9,7 +9,7 @@ module Fastlane
 
         resulting_paths = ::Trainer::TestParser.auto_convert(params)
         resulting_paths.each do |path, test_successful|
-          UI.user_error!("Unit tests failed", show_github_issues: false) unless test_successful
+          UI.test_failure!("Unit tests failed") unless test_successful
         end
 
         return resulting_paths
