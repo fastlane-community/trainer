@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trainer (0.6.0)
+    trainer (0.7.0)
       plist (>= 3.1.0, < 4.0.0)
 
 GEM
