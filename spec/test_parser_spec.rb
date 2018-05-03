@@ -44,12 +44,12 @@ describe Trainer do
                                   test_name: "Unit",
                                   duration: 0.4,
                                   run_destination: {
-                                    name: "iPhone 6",
+                                    name: "iPhone SE",
                                     target_architecture: "x86_64",
                                     target_device: {
-                                      identifier: "C506E86B-40D9-43D2-95FB-AAAADF799AAB",
-                                      name: "iPhone 6",
-                                      operating_system_version: "9.3"
+                                      identifier: "252CADC1-E488-4506-B293-892F59253C63",
+                                      name: "iPhone SE",
+                                      operating_system_version: "10.0"
                                     }
                                   },
                                   tests: [

@@ -2,11 +2,11 @@
 <testsuites tests="3" failures="0">
     <testsuite package="iPhone SE (10.0)" name="Unit - iPhone SE (10.0)" tests="3" failures="0" time="0.4">
         <properties>
-            <property name="RunDestination.Name" value="iPhone 6"/>
+            <property name="RunDestination.Name" value="iPhone SE"/>
             <property name="RunDestination.TargetArchitecture" value="x86_64"/>
-            <property name="RunDestination.TargetDevice.Identifier" value="C506E86B-40D9-43D2-95FB-CD0ADF799AAB"/>
-            <property name="RunDestination.TargetDevice.Name" value="iPhone 6"/>
-            <property name="RunDestination.TargetDevice.OperatingSystemVersion" value="9.3"/>
+            <property name="RunDestination.TargetDevice.Identifier" value="252CADC1-E488-4506-B293-892F59253C63"/>
+            <property name="RunDestination.TargetDevice.Name" value="iPhone SE"/>
+            <property name="RunDestination.TargetDevice.OperatingSystemVersion" value="10.0"/>
         </properties>
         <testcase classname="Unit" name="testExample()" time="0.1">
         </testcase>
