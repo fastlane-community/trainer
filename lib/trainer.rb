@@ -1,4 +1,4 @@
-require 'fastlane_core'
+require 'fastlane'
 
 require 'trainer/version'
 require 'trainer/options'

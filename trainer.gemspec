@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency 'plist', ">= 3.1.0", "< 4.0.0"
+  spec.add_dependency 'fastlane', '>= 2.25.0'
 
   # Development only
   spec.add_development_dependency 'bundler'

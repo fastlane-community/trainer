@@ -12,7 +12,7 @@ Some Xcode versions has a known issue around not properly closing `stdout` ([Rad
 
 > By using `trainer`, the Twitter iOS code base now generates JUnit reports 10 times faster.
 
- | [xcpretty](https://github.com/supermarin/xcpretty) |  trainer
+| | [xcpretty](https://github.com/supermarin/xcpretty) |  trainer
 --------------------------|------------------------------|------------------------------
 Prettify the `xcodebuild` output | :white_check_mark: | :no_entry_sign:
 Generate JUnit reports | :white_check_mark: | :white_check_mark:

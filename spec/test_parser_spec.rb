@@ -76,7 +76,7 @@ describe Trainer do
                                           line_number: 19,
                                           message: "XCTAssertTrue failed - ",
                                           performance_failure: false,
-                                          failure_message: "XCTAssertTrue failed - /Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift:19"
+                                          failure_message: "XCTAssertTrue failed -  (/Users/liamnichols/Code/Local/Trainer/Unit/Unit.swift:19)"
                                         }
                                       ]
                                     },

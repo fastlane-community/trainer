@@ -7,9 +7,10 @@ module Fastlane
         params[:path] ||= Actions.lane_context[Actions::SharedValues::SCAN_GENERATED_PLIST_FILE] if Actions.lane_context[Actions::SharedValues::SCAN_GENERATED_PLIST_FILE]
         params[:path] ||= Actions.lane_context[Actions::SharedValues::SCAN_DERIVED_DATA_PATH] if Actions.lane_context[Actions::SharedValues::SCAN_DERIVED_DATA_PATH]
 
+        fail_build = params[:fail_build]
         resulting_paths = ::Trainer::TestParser.auto_convert(params)
         resulting_paths.each do |path, test_successful|
-          UI.user_error!("Unit tests failed", show_github_issues: false) unless test_successful
+          UI.test_failure!("Unit tests failed") if fail_build && !test_successful
         end
 
         return resulting_paths
