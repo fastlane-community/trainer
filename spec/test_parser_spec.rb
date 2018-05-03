@@ -26,15 +26,16 @@ describe Trainer do
       end
     end
 
-    describe "Stores the data in a useful format" do
-      describe "#tests_successful?" do
-        it "returns false if tests failed" do
-          tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
-          expect(tp.tests_successful?).to eq(false)
-        end
+    describe "#tests_successful?" do
+      it "returns false if tests failed" do
+        tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
+        expect(tp.tests_successful?).to eq(false)
       end
+    end
 
-      it "works as expected" do
+    describe "#data" do
+
+      it "parses a single test target's output" do
         tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
         expect(tp.data).to eq([
                                 {
@@ -42,6 +43,15 @@ describe Trainer do
                                   target_name: "Unit",
                                   test_name: "Unit",
                                   duration: 0.4,
+                                  run_destination: {
+                                    name: "iPhone SE",
+                                    target_architecture: "x86_64",
+                                    target_device: {
+                                      identifier: "252CADC1-E488-4506-B293-892F59253C63",
+                                      name: "iPhone SE",
+                                      operating_system_version: "10.0"
+                                    }
+                                  },
                                   tests: [
                                     {
                                       identifier: "Unit/testExample()",
@@ -83,6 +93,75 @@ describe Trainer do
                                   number_of_tests: 3,
                                   number_of_failures: 1
                                 }
+                              ])
+      end
+      
+      it "parses multiple test targets' output without a run destination" do
+        tp = Trainer::TestParser.new("spec/fixtures/TestSummaries-NoRunDestination.plist")
+        expect(tp.data).to eq([
+          {:project_path=>"Foo.xcodeproj",
+            :target_name=>"FooTests",
+            :test_name=>"FooTests",
+            :run_destination=>nil,
+            :duration=>0.0,
+            :tests=>
+            [
+              {:identifier=>"BarViewControllerTests/testInit_NoPlaces_NoSelection()",
+                :test_group=>"BarViewControllerTests",
+                :name=>"testInit_NoPlaces_NoSelection()",
+                :object_class=>"IDESchemeActionTestSummary",
+                :status=>"Success",
+                :guid=>"CA8D1702-A3E7-48FD-8800-5EF827F29D9F",
+                :duration=>0.0}],
+                :number_of_tests=>1,
+                :number_of_failures=>0},
+                {:project_path=>"Foo.xcodeproj",
+                  :target_name=>"FooViewsTests",
+                  :test_name=>"FooViewsTests",
+                  :run_destination=>nil,
+                  :duration=>0.0,
+                  :tests=>
+                  [
+                    {:identifier=>"FooEmptyTableViewHelperTests/testHeaderViewObservation()",
+                      :test_group=>"FooEmptyTableViewHelperTests",
+                      :name=>"testHeaderViewObservation()",
+                      :object_class=>"IDESchemeActionTestSummary",
+                      :status=>"Success",
+                      :guid=>"DAFAADD3-8495-4E1E-9869-60701DEC5BE2",
+                      :duration=>0.0},
+                      {:identifier=>"UIView_ExtensionsTests/testComplexViewIsVisibleInWindow()",
+                        :test_group=>"UIView_ExtensionsTests",
+                        :name=>"testComplexViewIsVisibleInWindow()",
+                        :object_class=>"IDESchemeActionTestSummary",
+                        :status=>"Success",
+                        :guid=>"D03219FE-B432-4669-B957-42DA8C6FD99E",
+                        :duration=>0.0},
+                        {:identifier=>"UIView_ExtensionsTests/testSimpleViewIsVisibleInWindow()",
+                          :test_group=>"UIView_ExtensionsTests",
+                          :name=>"testSimpleViewIsVisibleInWindow()",
+                          :object_class=>"IDESchemeActionTestSummary",
+                          :status=>"Success",
+                          :guid=>"F55CD64D-EC8C-4679-BF41-F5ECAA2CB26F",
+                          :duration=>0.0}],
+                          :number_of_tests=>3,
+                          :number_of_failures=>0},
+                          {:project_path=>"Foo.xcodeproj",
+                            :target_name=>"FooFoundationTests",
+                            :test_name=>"FooFoundationTests",
+                            :run_destination=>nil,
+                            :duration=>0.0,
+                            :tests=>
+                            [
+                              {:identifier=>
+                                "KeyValueObserverDeferredTests/testCancelReleasesObservedObject()",
+                                :test_group=>"KeyValueObserverDeferredTests",
+                                :name=>"testCancelReleasesObservedObject()",
+                                :object_class=>"IDESchemeActionTestSummary",
+                                :status=>"Success",
+                                :guid=>"913E53E7-BD75-4987-B48E-4D08FB2D441B",
+                                :duration=>0.0}],
+                                :number_of_tests=>1,
+                                :number_of_failures=>0}
                               ])
       end
     end

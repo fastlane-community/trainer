@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="5" failures="0">
+    <testsuite  name="FooTests" tests="1" failures="0" time="0.0">
+        <testcase classname="BarViewControllerTests" name="testInit_NoPlaces_NoSelection()" time="0.0">
+        </testcase>
+    </testsuite>
+    <testsuite  name="FooViewsTests" tests="3" failures="0" time="0.0">
+        <testcase classname="FooEmptyTableViewHelperTests" name="testHeaderViewObservation()" time="0.0">
+        </testcase>
+        <testcase classname="UIView_ExtensionsTests" name="testComplexViewIsVisibleInWindow()" time="0.0">
+        </testcase>
+        <testcase classname="UIView_ExtensionsTests" name="testSimpleViewIsVisibleInWindow()" time="0.0">
+        </testcase>
+    </testsuite>
+    <testsuite  name="FooFoundationTests" tests="1" failures="0" time="0.0">
+        <testcase classname="KeyValueObserverDeferredTests" name="testCancelReleasesObservedObject()" time="0.0">
+        </testcase>
+    </testsuite>
+</testsuites>

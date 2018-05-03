@@ -13,9 +13,7 @@ module Trainer
                                              title: "Summary for trainer #{Trainer::VERSION}")
 
       containing_dir = config[:path]
-      files = Dir["#{containing_dir}/**/Logs/Test/*TestSummaries.plist"]
-      files += Dir["#{containing_dir}/Test/*TestSummaries.plist"]
-      files += Dir["#{containing_dir}/*TestSummaries.plist"]
+      files = Dir["#{containing_dir}/**/*_TestSummaries.plist"]
       files += Dir[containing_dir] if containing_dir.end_with?(".plist") # if it's the exact path to a plist file
 
       if files.empty?
@@ -104,12 +102,29 @@ module Trainer
 
     # Convert the Hashes and Arrays in something more useful
     def parse_content
+      plist_run_destination = self.raw_json["RunDestination"]
+      if plist_run_destination
+        plist_target_device = plist_run_destination["TargetDevice"]
+        run_destination = {
+          name: plist_run_destination["Name"],
+          target_architecture: plist_run_destination["TargetArchitecture"],
+          target_device: {
+            identifier: plist_target_device["Identifier"],
+            name: plist_target_device["Name"],
+            operating_system_version: plist_target_device["OperatingSystemVersion"]
+          }
+        }
+      else
+        run_destination = nil
+      end
+
       self.data = self.raw_json["TestableSummaries"].collect do |testable_summary|
         summary_row = {
           project_path: testable_summary["ProjectPath"],
           target_name: testable_summary["TargetName"],
           test_name: testable_summary["TestName"],
           duration: testable_summary["Tests"].map { |current_test| current_test["Duration"] }.inject(:+),
+          run_destination: run_destination,
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
             current_row = {
               identifier: current_test["TestIdentifier"],
