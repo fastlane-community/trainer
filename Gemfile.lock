@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    trainer (0.4.0)
+    trainer (0.5.0)
       plist (>= 3.1.0, < 4.0.0)
 
 GEM
@@ -11,7 +11,7 @@ GEM
     coderay (1.1.1)
     diff-lcs (1.2.5)
     method_source (0.8.2)
-    parser (2.3.1.2)
+    parser (2.3.3.1)
       ast (~> 2.2)
     plist (3.4.0)
     powerpack (0.1.1)
@@ -20,7 +20,7 @@ GEM
       method_source (~> 0.8.1)
       slop (~> 3.4)
     rainbow (2.1.0)
-    rake (11.2.2)
+    rake (12.0.0)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -41,7 +41,7 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.8.1)
     slop (3.6.0)
-    unicode-display_width (1.1.0)
+    unicode-display_width (1.1.2)
 
 PLATFORMS
   ruby
@@ -55,4 +55,4 @@ DEPENDENCIES
   trainer!
 
 BUNDLED WITH
-   1.16.1
+   1.13.6

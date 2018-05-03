@@ -9,7 +9,7 @@
       <% target_device = run_destination[:target_device] %>
       <% package = "#{run_destination[:name]} (#{target_device[:operating_system_version]})" %>
       <% package_attr = "package=#{ package.encode(:xml => :attr) }" %>
-      <% testsuite_name = "#{testsuite[:target_name]} - #{package}" %>
+      <% testsuite_name = "#{(testsuite[:target_name].nil? ? testsuite[:test_name] : testsuite[:target_name])} - #{package}" %>
     <% else %>
       <% package_attr = "" %>
       <% testsuite_name = testsuite[:target_name] %>
