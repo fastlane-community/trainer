@@ -6,6 +6,8 @@ module Trainer
 
     attr_accessor :raw_json
 
+    attr_accessor :plist_dir
+
     # Returns a hash with the path being the key, and the value
     # defining if the tests were successful
     def self.auto_convert(config)
@@ -48,6 +50,7 @@ module Trainer
 
     def initialize(path, config = {})
       path = File.expand_path(path)
+      self.plist_dir = File.dirname path
       UI.user_error!("File not found at path '#{path}'") unless File.exist?(path)
 
       self.file_content = File.read(path)
@@ -149,6 +152,20 @@ module Trainer
                   failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
                 }
               end
+              crash_attachment_files = current_test.fetch('ActivitySummaries', []).select do |activity|
+                activity.key?('DiagnosticReportFileName') && activity['DiagnosticReportFileName'].end_with?('.crash')
+              end.map do |activity|
+                activity['DiagnosticReportFileName']
+              end
+              current_row[:failures] += crash_attachment_files.map do |filename|
+                {
+                  file_name: filename,
+                  line_number: 0,
+                  message: 'Crash',
+                  performance_failure: false,
+                  failure_message: File.open(File.join(self.plist_dir, 'Attachments', filename), &:read)
+                }
+              end unless crash_attachment_files.empty?
             end
             current_row
           end

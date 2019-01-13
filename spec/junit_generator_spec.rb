@@ -23,5 +23,11 @@ describe Trainer do
       junit = File.read("spec/fixtures/Valid2-x.junit")
       expect(tp.to_junit).to eq(junit)
     end
+
+    it "includes .crash test attachments" do
+      tp = Trainer::TestParser.new("spec/fixtures/Test-ShapeSwift.xcresult/TestSummaries.plist")
+      junit = File.read("spec/fixtures/Test-ShapeSwift.xcresult/TestSummaries.xml")
+      expect(tp.to_junit).to eq(junit)
+    end
   end
 end
