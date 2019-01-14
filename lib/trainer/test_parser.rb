@@ -152,11 +152,8 @@ module Trainer
                   failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
                 }
               end
-              crash_attachment_files = current_test.fetch('ActivitySummaries', []).select do |activity|
-                activity.key?('DiagnosticReportFileName') && activity['DiagnosticReportFileName'].end_with?('.crash')
-              end.map do |activity|
-                activity['DiagnosticReportFileName']
-              end
+              activity_summaries = current_test['ActivitySummaries'] || []
+              crash_attachment_files = activity_summaries.map { |a| a['DiagnosticReportFileName'] }.compact.select { |f| f.end_with? '.crash' }
               current_row[:failures] += crash_attachment_files.map do |filename|
                 {
                   file_name: filename,
