@@ -11,6 +11,7 @@
         <testcase classname=<%= test[:test_group].encode(:xml => :attr) %> name=<%= test[:name].encode(:xml => :attr) %> time="<%= test[:duration] %>">
           <% (test[:failures] || []).each do |failure| %>
             <failure message=<%= failure[:failure_message].encode(:xml => :attr) %>>
+              <%= (failure[:failure_trace] || '').encode(:xml => :text) %>
             </failure>
           <% end %>
         </testcase>

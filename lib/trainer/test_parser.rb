@@ -160,7 +160,8 @@ module Trainer
                   line_number: 0,
                   message: 'Crash',
                   performance_failure: false,
-                  failure_message: File.open(File.join(self.plist_dir, 'Attachments', filename), &:read)
+                  failure_message: 'A crash happened during the test.',
+                  failure_trace: File.open(File.join(self.plist_dir, 'Attachments', filename), &:read)
                 }
               end unless crash_attachment_files.empty?
             end
