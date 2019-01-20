@@ -8,6 +8,8 @@ module Trainer
 
     attr_accessor :plist_dir
 
+    attr_accessor :include_crash_trace
+
     # Returns a hash with the path being the key, and the value
     # defining if the tests were successful
     def self.auto_convert(config)
@@ -58,7 +60,7 @@ module Trainer
       return if self.raw_json["FormatVersion"].to_s.length.zero? # maybe that's a useless plist file
 
       ensure_file_valid!
-      parse_content(config[:xcpretty_naming])
+      parse_content(config[:xcpretty_naming], config[:include_crash_trace])
     end
 
     # Returns the JUnit report as String
@@ -124,7 +126,7 @@ module Trainer
     end
 
     # Convert the Hashes and Arrays in something more useful
-    def parse_content(xcpretty_naming)
+    def parse_content(xcpretty_naming, include_crash_trace)
       self.data = self.raw_json["TestableSummaries"].collect do |testable_summary|
         summary_row = {
           project_path: testable_summary["ProjectPath"],
@@ -152,11 +154,13 @@ module Trainer
                   failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
                 }
               end
-              activity_summaries = current_test['ActivitySummaries'] || []
-              crash_attachment_file = activity_summaries.map { |a| a['DiagnosticReportFileName'] }.compact.find { |f| f.end_with? '.crash' }
-              unless crash_attachment_file.nil?
-                crash_attachment_path = File.join(self.plist_dir, 'Attachments', crash_attachment_file)
-                current_row[:failures].first[:failure_trace] = File.open(crash_attachment_path, &:read)
+              if include_crash_trace
+                activity_summaries = current_test['ActivitySummaries'] || []
+                crash_attachment_file = activity_summaries.map { |a| a['DiagnosticReportFileName'] }.compact.find { |f| f.end_with? '.crash' }
+                unless crash_attachment_file.nil?
+                  crash_attachment_path = File.join(self.plist_dir, 'Attachments', crash_attachment_file)
+                  current_row[:failures].first[:failure_trace] = File.open(crash_attachment_path, &:read)
+                end
               end
             end
             current_row

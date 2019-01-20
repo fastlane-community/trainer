@@ -39,6 +39,11 @@ module Trainer
                                      env_name: "TRAINER_XCPRETTY_NAMING",
                                      description: "Produces class name and test name identical to xcpretty naming in junit file",
                                      is_string: false,
+                                     default_value: false),
+        FastlaneCore::ConfigItem.new(key: :include_crash_trace,
+                                     env_name: "TRAINER_INCLUDE_CRASH_TRACE",
+                                     description: "If there is a crash associated with a test failure, the contents of the .crash file will be included in the failure text",
+                                     is_string: false,
                                      default_value: false)
       ]
     end
