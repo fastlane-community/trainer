@@ -23,8 +23,6 @@
         </testcase>
         <testcase classname="MultiPatchTest" name="testDecoding()" time="0.0">
             <failure message="Crash: xctest (3920): MultiPatchTest (&lt;unknown&gt;:0)">
-            </failure>
-            <failure message="A crash happened during the test.">
               Process:               xctest [3920]
 Path:                  /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneSimulator.platform/Developer/Library/Xcode/Agents/xctest
 Identifier:            xctest

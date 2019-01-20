@@ -153,17 +153,11 @@ module Trainer
                 }
               end
               activity_summaries = current_test['ActivitySummaries'] || []
-              crash_attachment_files = activity_summaries.map { |a| a['DiagnosticReportFileName'] }.compact.select { |f| f.end_with? '.crash' }
-              current_row[:failures] += crash_attachment_files.map do |filename|
-                {
-                  file_name: filename,
-                  line_number: 0,
-                  message: 'Crash',
-                  performance_failure: false,
-                  failure_message: 'A crash happened during the test.',
-                  failure_trace: File.open(File.join(self.plist_dir, 'Attachments', filename), &:read)
-                }
-              end unless crash_attachment_files.empty?
+              crash_attachment_file = activity_summaries.map { |a| a['DiagnosticReportFileName'] }.compact.find { |f| f.end_with? '.crash' }
+              unless crash_attachment_file.nil?
+                crash_attachment_path = File.join(self.plist_dir, 'Attachments', crash_attachment_file)
+                current_row[:failures].first[:failure_trace] = File.open(crash_attachment_path, &:read)
+              end
             end
             current_row
           end
