@@ -118,8 +118,8 @@ module Trainer
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
             current_row = {
               identifier: current_test["TestIdentifier"],
-              test_group: current_test["TestIdentifier"].split("/")[0..-2].join("."),
-              name: current_test["TestName"],
+			  test_group: testable_summary["TargetName"] + "." + current_test["TestIdentifier"].split("/")[0..-2].join("."),
+			  name: current_test["TestName"][0..-3],
               object_class: current_test["TestObjectClass"],
               status: current_test["TestStatus"],
               guid: current_test["TestSummaryGUID"],
