@@ -116,17 +116,17 @@ module Trainer
           test_name: testable_summary["TestName"],
           duration: testable_summary["Tests"].map { |current_test| current_test["Duration"] }.inject(:+),
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
-			if xcpretty_naming
-				test_group = testable_summary["TargetName"] + "." + current_test["TestIdentifier"].split("/")[0..-2].join(".")
-				test_name = current_test["TestName"][0..-3]
-			else
-				test_group = current_test["TestIdentifier"].split("/")[0..-2].join(".")
-				test_name = current_test["TestName"]
-			end
+            if xcpretty_naming
+              test_group = testable_summary["TargetName"] + "." + current_test["TestIdentifier"].split("/")[0..-2].join(".")
+              test_name = current_test["TestName"][0..-3]
+            else
+              test_group = current_test["TestIdentifier"].split("/")[0..-2].join(".")
+              test_name = current_test["TestName"]
+            end
             current_row = {
               identifier: current_test["TestIdentifier"],
-			  test_group: test_group,
-			  name: test_name,
+                 test_group: test_group,
+                 name: test_name,
               object_class: current_test["TestObjectClass"],
               status: current_test["TestStatus"],
               guid: current_test["TestSummaryGUID"],
