@@ -37,7 +37,7 @@ module Trainer
           to_path = path.gsub(".plist", config[:extension])
         end
 
-        tp = Trainer::TestParser.new(path)
+        tp = Trainer::TestParser.new(path, config)
         File.write(to_path, tp.to_junit)
         puts "Successfully generated '#{to_path}'"
 
@@ -46,7 +46,7 @@ module Trainer
       return_hash
     end
 
-    def initialize(path)
+    def initialize(path, config)
       path = File.expand_path(path)
       UI.user_error!("File not found at path '#{path}'") unless File.exist?(path)
 
@@ -55,7 +55,7 @@ module Trainer
       return if self.raw_json["FormatVersion"].to_s.length.zero? # maybe that's a useless plist file
 
       ensure_file_valid!
-      parse_content
+      parse_content(config[:xcpretty_naming])
     end
 
     # Returns the JUnit report as String
@@ -108,7 +108,7 @@ module Trainer
     end
 
     # Convert the Hashes and Arrays in something more useful
-    def parse_content
+    def parse_content(xcpretty_naming)
       self.data = self.raw_json["TestableSummaries"].collect do |testable_summary|
         summary_row = {
           project_path: testable_summary["ProjectPath"],
@@ -116,10 +116,17 @@ module Trainer
           test_name: testable_summary["TestName"],
           duration: testable_summary["Tests"].map { |current_test| current_test["Duration"] }.inject(:+),
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
+			if xcpretty_naming
+				test_group = testable_summary["TargetName"] + "." + current_test["TestIdentifier"].split("/")[0..-2].join(".")
+				test_name = current_test["TestName"][0..-3]
+			else
+				test_group = current_test["TestIdentifier"].split("/")[0..-2].join(".")
+				test_name = current_test["TestName"]
+			end
             current_row = {
               identifier: current_test["TestIdentifier"],
-			  test_group: testable_summary["TargetName"] + "." + current_test["TestIdentifier"].split("/")[0..-2].join("."),
-			  name: current_test["TestName"][0..-3],
+			  test_group: test_group,
+			  name: test_name,
               object_class: current_test["TestObjectClass"],
               status: current_test["TestStatus"],
               guid: current_test["TestSummaryGUID"],
