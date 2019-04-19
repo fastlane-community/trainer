@@ -107,6 +107,19 @@ module Trainer
       return tests
     end
 
+    # Returns the test group and test name from the passed summary and test
+    # Pass xcpretty_naming = true to get the test naming aligned with xcpretty
+    def test_group_and_name(testable_summary, test, xcpretty_naming)
+      if xcpretty_naming
+        group = testable_summary["TargetName"] + "." + test["TestIdentifier"].split("/")[0..-2].join(".")
+        name = test["TestName"][0..-3]
+      else
+        group = test["TestIdentifier"].split("/")[0..-2].join(".")
+        name = test["TestName"]
+      end
+      return group, name
+    end
+
     # Convert the Hashes and Arrays in something more useful
     def parse_content(xcpretty_naming)
       self.data = self.raw_json["TestableSummaries"].collect do |testable_summary|
@@ -116,13 +129,7 @@ module Trainer
           test_name: testable_summary["TestName"],
           duration: testable_summary["Tests"].map { |current_test| current_test["Duration"] }.inject(:+),
           tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
-            if xcpretty_naming
-              test_group = testable_summary["TargetName"] + "." + current_test["TestIdentifier"].split("/")[0..-2].join(".")
-              test_name = current_test["TestName"][0..-3]
-            else
-              test_group = current_test["TestIdentifier"].split("/")[0..-2].join(".")
-              test_name = current_test["TestName"]
-            end
+            test_group, test_name = test_group_and_name(testable_summary, current_test, xcpretty_naming)
             current_row = {
               identifier: current_test["TestIdentifier"],
                  test_group: test_group,
