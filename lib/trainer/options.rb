@@ -35,10 +35,10 @@ module Trainer
                                      is_string: false,
                                      default_value: true),
         FastlaneCore::ConfigItem.new(key: :xcpretty_naming,
-                   short_option: "-x",
-                   env_name: "TRAINER_XCPRETTY_NAMING",
+                                     short_option: "-x",
+                                     env_name: "TRAINER_XCPRETTY_NAMING",
                                      description: "Produces class name and test name identical to xcpretty naming in junit file",
-                   is_string: false,
+                                     is_string: false,
                                      default_value: false)
       ]
     end
