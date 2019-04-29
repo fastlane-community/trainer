@@ -46,7 +46,7 @@ module Trainer
       return_hash
     end
 
-    def initialize(path, config)
+    def initialize(path, config = {})
       path = File.expand_path(path)
       UI.user_error!("File not found at path '#{path}'") unless File.exist?(path)
 
