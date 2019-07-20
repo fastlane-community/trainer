@@ -25,7 +25,7 @@ describe Trainer do
     end
 
     it "includes .crash test attachments" do
-      tp = Trainer::TestParser.new("spec/fixtures/Test-ShapeSwift.xcresult/TestSummaries.plist", true)
+      tp = Trainer::TestParser.new("spec/fixtures/Test-ShapeSwift.xcresult/TestSummaries.plist", { include_crash_trace: true })
       junit = File.read("spec/fixtures/Test-ShapeSwift.xcresult/TestSummaries.xml")
       expect(tp.to_junit).to eq(junit)
     end
