@@ -184,25 +184,48 @@ module Trainer
               subtest_methods_raw.map do |subtest_method|
                 name = subtest_method["name"]["_value"]
                 duration = subtest_method["duration"]["_value"]
+                test_status = subtest_method["testStatus"]["_value"]
 
-                {
-                name: name,
-                duration: duration,
+                test = {
+                  name: name,
+                  duration: duration,
 
-                # ???
-                identifier: "",
-                test_group: classname,
-                status: "Success",
-                guid:" "
-              }
+                  # ???
+                  identifier: "",
+                  test_group: classname,
+                  status: test_status,
+                  guid:" "
+                }
+
+                # TODO: Do logic for failure
+                if test_status == "Failure"
+                  test[:failures] = [{
+                    file_name: "",
+                    line_number: 0,
+                    message: "",
+                    performance_failure: {},
+                    failure_message: ""
+                  }]
+                end
+                # if current_test["FailureSummaries"]
+                #   current_row[:failures] = current_test["FailureSummaries"].collect do |current_failure|
+                #     {
+                #       file_name: current_failure['FileName'],
+                #       line_number: current_failure['LineNumber'],
+                #       message: current_failure['Message'],
+                #       performance_failure: current_failure['PerformanceFailure'],
+                #       failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
+                #     }
+                #   end
+                # end
+
+                test
               end
             end.flatten
           end.flatten
 
           subtest_groups
         end.flatten
-
-        puts "tests: #{tests}"
 
         row = {
           project_path: project_path,
@@ -211,10 +234,10 @@ module Trainer
 
           duration: tests.map{ |test| test[:duration] }.inject(:+),
           tests: tests,
-
-          number_of_tests: 0,
-          number_of_failures: 0
         }
+
+        row[:number_of_tests] = row[:tests].count
+        row[:number_of_failures] = row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
         
         row
       end
