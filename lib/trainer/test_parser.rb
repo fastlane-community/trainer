@@ -142,162 +142,70 @@ module Trainer
         tests_ref_id["_value"]
       end.compact
 
-      xcresult_summaries = ids.map do |id|
+      summaries = ids.map do |id|
         raw = `xcrun xcresulttool get --format json --path #{path} --id #{id}`
         json = JSON.parse(raw)
-        parse_xcresult_summaries_content(json)
+
+        summary = Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
       end
 
-      # NOT SURE IF THERE WILL BE MORE THAN ONE HERE
-      self.data = xcresult_summaries.flatten
-      puts "data: #{self.data}"
+      summaries_to_data(summaries)
     end
 
-    def parse_xcresult_summaries_content(json)
-      summaries = json["summaries"]["_values"]
-      testable_summaries_raw = summaries.map do |summary|
-        summary["testableSummaries"]["_values"]
+    def summaries_to_data(summaries)
+      all_summaries = summaries.map do |summaries|
+        summaries.summaries
+      end.flatten
+      testable_summaries = all_summaries.map do |summary|
+        summary.testable_summaries
       end.flatten
 
-      return testable_summaries_raw.map do |testable_summary|
-        name = testable_summary["name"]["_value"]
-        target_name = testable_summary["targetName"]["_value"]
-        project_path = testable_summary["projectRelativePath"]["_value"]
+      rows = testable_summaries.map do |testable_summary|
 
-        puts "name=#{name}, target_name=#{target_name}"
-
-        tests_raw = testable_summary["tests"]["_values"]
-        tests = tests_raw.map do |test|
-          group_name = test["name"]["_value"]
-          duration = test["duration"]["_value"]
-
-          subtest_groups_raw = (test["subtests"] || {})["_values"] || []
-          subtest_groups = subtest_groups_raw.map do |subtest_group|
-            name = subtest_group["name"]["_value"]
-
-            subtest_tests_raw = (subtest_group["subtests"] || {})["_values"] || []
-            subtest_tests_raw.map do |subtest_test|
-              classname = subtest_test["name"]["_value"]
-              duration = subtest_test["duration"]["_value"]
-
-              subtest_methods_raw = (subtest_test["subtests"] || {})["_values"] || []
-              subtest_methods_raw.map do |subtest_method|
-                name = subtest_method["name"]["_value"]
-                duration = subtest_method["duration"]["_value"]
-                test_status = subtest_method["testStatus"]["_value"]
-
-                test = {
-                  name: name,
-                  duration: duration,
-
-                  # ???
-                  identifier: "",
-                  test_group: classname,
-                  status: test_status,
-                  guid:" "
-                }
-
-                # TODO: Do logic for failure
-                if test_status == "Failure"
-                  test[:failures] = [{
-                    file_name: "",
-                    line_number: 0,
-                    message: "",
-                    performance_failure: {},
-                    failure_message: ""
-                  }]
-                end
-                # if current_test["FailureSummaries"]
-                #   current_row[:failures] = current_test["FailureSummaries"].collect do |current_failure|
-                #     {
-                #       file_name: current_failure['FileName'],
-                #       line_number: current_failure['LineNumber'],
-                #       message: current_failure['Message'],
-                #       performance_failure: current_failure['PerformanceFailure'],
-                #       failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
-                #     }
-                #   end
-                # end
-
-                test
-              end
-            end.flatten
-          end.flatten
-
-          subtest_groups
-        end.flatten
-
+        all_tests = testable_summary.all_tests.flatten
         row = {
-          project_path: project_path,
-          target_name: target_name,
-          test_name: name,
+          project_path: testable_summary.project_relative_path,
+          target_name: testable_summary.target_name,
+          test_name: testable_summary.name,
 
-          duration: tests.map{ |test| test[:duration] }.inject(:+),
-          tests: tests,
+          duration: all_tests.map{ |test| test.duration }.inject(:+),
+          tests: all_tests.map do |test|
+            test_row = {
+              name: test.name,
+              duration: test.duration,
+              status: test.test_status,
+
+              # ???
+              identifier: "",
+              test_group: test.parent.name,
+              guid:" "
+            }
+
+            # TODO: Do logic for failure
+            if test.test_status == "Failure"
+              test_row[:failures] = [{
+                file_name: "",
+                line_number: 0,
+                message: "",
+                performance_failure: {},
+                failure_message: ""
+              }]
+            end
+
+            test_row
+          end
         }
 
-        row[:number_of_tests] = row[:tests].count
-        row[:number_of_failures] = row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
-        
+        row[:number_of_tests] = 0
+        row[:number_of_failures] = 0
+
+        # row[:number_of_tests] = row[:tests].count
+        # row[:number_of_failures] = row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
+
         row
       end
 
-      # summary_row = {
-      #     project_path: content["ProjectPath"],
-      #     target_name: content["TargetName"],
-      #     test_name: content["TestName"],
-        #   duration: testable_summary["Tests"].map { |current_test| current_test["Duration"] }.inject(:+),
-        #   tests: unfold_tests(testable_summary["Tests"]).collect do |current_test|
-        #     test_group, test_name = test_group_and_name(testable_summary, current_test, xcpretty_naming)
-        #     current_row = {
-        #       identifier: current_test["TestIdentifier"],
-        #          test_group: test_group,
-        #          name: test_name,
-        #       object_class: current_test["TestObjectClass"],
-        #       status: current_test["TestStatus"],
-        #       guid: current_test["TestSummaryGUID"],
-        #       duration: current_test["Duration"]
-        #     }
-        #     if current_test["FailureSummaries"]
-        #       current_row[:failures] = current_test["FailureSummaries"].collect do |current_failure|
-        #         {
-        #           file_name: current_failure['FileName'],
-        #           line_number: current_failure['LineNumber'],
-        #           message: current_failure['Message'],
-        #           performance_failure: current_failure['PerformanceFailure'],
-        #           failure_message: "#{current_failure['Message']} (#{current_failure['FileName']}:#{current_failure['LineNumber']})"
-        #         }
-        #       end
-        #     end
-        #     current_row
-        #   end
-        # }
-        # summary_row[:number_of_tests] = summary_row[:tests].count
-        # summary_row[:number_of_failures] = summary_row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
-        # summary_row
-    end
-
-    def parse_subtests(subtests, tabs)
-      subtests.map do |subtest|
-        type = subtest["_type"]["_name"]
-        name = subtest["name"]["_value"]
-        duration = subtest["duration"]["_value"]
-        puts "#{tabs}type=#{type} name=#{name} duration=#{duration}"
-
-        obj = {
-          type: type,
-          "TestName": name,
-          "Duration" => duration,
-          subtests: []
-        }
-
-        if subtest["subtests"]
-          subtests = subtest["subtests"]["_values"]
-          obj[:subtests] = parse_subtests(subtests, tabs + "\t")
-        end
-
-        obj
-      end
+      self.data = rows
     end
 
     # Convert the Hashes and Arrays in something more useful
