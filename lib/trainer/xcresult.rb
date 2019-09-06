@@ -166,5 +166,185 @@ module Trainer
         return [self]
       end
     end
+
+    # - ActionsInvocationRecord
+    #   * Kind: object
+    #   * Properties:
+    #     + metadataRef: Reference?
+    #     + metrics: ResultMetrics
+    #     + issues: ResultIssueSummaries
+    #     + actions: [ActionRecord]
+    #     + archive: ArchiveInfo?
+    class ActionsInvocationRecord
+      attr_accessor :actions
+      attr_accessor :issues
+      def initialize(data)
+        self.actions = data["actions"]["_values"].map do |action_data|
+          ActionRecord.new(action_data)
+        end
+        self.issues = ResultIssueSummaries.new(data["issues"])
+      end
+    end
+
+    # - ActionRecord
+    #   * Kind: object
+    #   * Properties:
+    #     + schemeCommandName: String
+    #     + schemeTaskName: String
+    #     + title: String?
+    #     + startedTime: Date
+    #     + endedTime: Date
+    #     + runDestination: ActionRunDestinationRecord
+    #     + buildResult: ActionResult
+    #     + actionResult: ActionResult
+    class ActionRecord
+      attr_accessor :scheme_command_name
+      attr_accessor :scheme_task_name
+      attr_accessor :title
+      attr_accessor :build_result
+      attr_accessor :action_result
+      def initialize(data)
+        self.scheme_command_name = data["schemeCommandName"]["_value"]
+        self.scheme_task_name = data["schemeTaskName"]["_value"]
+        self.title = data["title"]["_value"]
+        self.build_result = ActionResult.new(data["buildResult"])
+        self.action_result = ActionResult.new(data["actionResult"])
+      end
+    end
+
+    # - ActionResult
+    #   * Kind: object
+    #   * Properties:
+    #     + resultName: String
+    #     + status: String
+    #     + metrics: ResultMetrics
+    #     + issues: ResultIssueSummaries
+    #     + coverage: CodeCoverageInfo
+    #     + timelineRef: Reference?
+    #     + logRef: Reference?
+    #     + testsRef: Reference?
+    #     + diagnosticsRef: Reference?
+    class ActionResult
+      attr_accessor :result_name
+      attr_accessor :status
+      attr_accessor :issues
+      attr_accessor :timeline_ref
+      attr_accessor :log_ref
+      attr_accessor :tests_ref
+      attr_accessor :diagnostics_ref
+      def initialize(data)
+        self.result_name = data["resultName"]["_value"]
+        self.status = data["status"]["_value"]
+        self.issues = ResultIssueSummaries.new(data["issues"])
+
+        self.timeline_ref = Reference.new(data["timelineRef"]) if data["timelineRef"]
+        self.log_ref = Reference.new(data["logRef"]) if data["logRef"]
+        self.tests_ref = Reference.new(data["testsRef"]) if data["testsRef"]
+        self.diagnostics_ref = Reference.new(data["diagnosticsRef"]) if data["diagnosticsRef"]
+      end
+    end
+
+    # - Reference
+    #   * Kind: object
+    #   * Properties:
+    #     + id: String
+    #     + targetType: TypeDefinition?
+    class Reference
+      attr_accessor :id
+      attr_accessor :target_type
+      def initialize(data)
+        self.id = data["id"]["_value"]
+        self.target_type = TypeDefinition.new(data["targetType"]) if data["targetType"]
+      end
+    end
+
+    # - TypeDefinition
+    #   * Kind: object
+    #   * Properties:
+    #     + name: String
+    #     + supertype: TypeDefinition?
+    class TypeDefinition
+      attr_accessor :name
+      attr_accessor :supertype
+      def initialize(data)
+        self.name = data["name"]["_value"]
+        self.supertype = TypeDefinition.new(data["supertype"]) if data["supertype"]
+      end
+    end
+
+    # - DocumentLocation
+    #   * Kind: object
+    #   * Properties:
+    #     + url: String
+    #     + concreteTypeName: String
+    class DocumentLocation
+      attr_accessor :url
+      attr_accessor :concrete_type_name
+      def initialize(data)
+        self.url = data["url"]["_value"]
+        self.concrete_type_name = data["concreteTypeName"]["_value"]
+      end
+    end
+
+    # - IssueSummary
+    #   * Kind: object
+    #   * Properties:
+    #     + issueType: String
+    #     + message: String
+    #     + producingTarget: String?
+    #     + documentLocationInCreatingWorkspace: DocumentLocation?
+    class IssueSummary
+      attr_accessor :issue_type
+      attr_accessor :message
+      attr_accessor :producing_target
+      attr_accessor :document_location_in_creating_workspace
+      def initialize(data)
+        self.issue_type = data["issueType"]["_value"]
+        self.message = data["message"]["_value"]
+        self.producing_target = data["producingTarget"]["_value"]
+        self.document_location_in_creating_workspace = DocumentLocation.new(data["documentLocationInCreatingWorkspace"]) if data["documentLocationInCreatingWorkspace"]
+      end
+    end
+
+    # - ResultIssueSummaries
+    #   * Kind: object
+    #   * Properties:
+    #     + analyzerWarningSummaries: [IssueSummary]
+    #     + errorSummaries: [IssueSummary]
+    #     + testFailureSummaries: [TestFailureIssueSummary]
+    #     + warningSummaries: [IssueSummary]
+    class ResultIssueSummaries
+      attr_accessor :analyzer_warning_summaries
+      attr_accessor :error_summaries
+      attr_accessor :test_failure_summaries
+      attr_accessor :warning_summaries
+      def initialize(data)
+        self.analyzer_warning_summaries = data["analyzerWarningSummaries"]["_values"].map do |summary_data|
+          IssueSummary.new(summary_data)
+        end if data["analyzerWarningSummaries"]
+        self.error_summaries = data["errorSummaries"]["_values"].map do |summary_data|
+          IssueSummary.new(summary_data)
+        end if data["errorSummaries"]
+        self.test_failure_summaries = data["testFailureSummaries"]["_values"].map do |summary_data|
+          TestFailureIssueSummary.new(summary_data)
+        end if data["testFailureSummaries"]
+        self.warning_summaries = data["warningSummaries"]["_values"].map do |summary_data|
+          IssueSummary.new(summary_data)
+        end if data["warningSummaries"]
+      end
+    end
+
+    # - TestFailureIssueSummary
+    #   * Supertype: IssueSummary
+    #   * Kind: object
+    #   * Properties:
+    #     + testCaseName: String
+    class TestFailureIssueSummary < IssueSummary
+      attr_accessor :test_case_name
+      def initialize(data)
+        self.test_case_name = data["testCaseName"]["_value"]
+        super
+      end
+    end
   end
 end

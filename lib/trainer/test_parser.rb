@@ -135,13 +135,13 @@ module Trainer
       result_bundle_object_raw = `xcrun xcresulttool get --format json --path #{path}`
       result_bundle_object = JSON.parse(result_bundle_object_raw)
 
-      actions = result_bundle_object["actions"]["_values"]
-      ids = actions.map do |action|
-        tests_ref = action["actionResult"]["testsRef"] || {}
-        tests_ref_id = tests_ref["id"] || {}
-        tests_ref_id["_value"]
+      actions_invocation_record = Trainer::XCResult::ActionsInvocationRecord.new(result_bundle_object)
+
+      test_refs = actions_invocation_record.actions.map do |action|
+        action.action_result.tests_ref
       end.compact
 
+      ids = test_refs.map { |test_ref| test_ref.id }
       summaries = ids.map do |id|
         raw = `xcrun xcresulttool get --format json --path #{path} --id #{id}`
         json = JSON.parse(raw)
@@ -149,10 +149,11 @@ module Trainer
         summary = Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
       end
 
-      summaries_to_data(summaries)
+      failures = actions_invocation_record.issues.test_failure_summaries
+      summaries_to_data(summaries, failures)
     end
 
-    def summaries_to_data(summaries)
+    def summaries_to_data(summaries, failures)
       all_summaries = summaries.map do |summaries|
         summaries.summaries
       end.flatten
@@ -181,14 +182,27 @@ module Trainer
               guid:" "
             }
 
-            # TODO: Do logic for failure
-            if test.test_status == "Failure"
+            # Need to match failure on test case name
+            # Example:
+            # producing_target: "TestThisDude"
+            # test_case_name: "TestThisDude.testFailureJosh2()  
+            found_failure = failures.find do |failure|
+              failure.test_case_name == "#{test.parent.name}.#{test.name}"
+            end
+
+            if test.test_status == "Failure" && found_failure
+              message = found_failure.message
+              if found_failure.document_location_in_creating_workspace
+                file_path = found_failure.document_location_in_creating_workspace.url.gsub("file://", "")
+                message += " (#{file_path})"
+              end
+
               test_row[:failures] = [{
                 file_name: "",
                 line_number: 0,
                 message: "",
                 performance_failure: {},
-                failure_message: ""
+                failure_message: message
               }]
             end
 
