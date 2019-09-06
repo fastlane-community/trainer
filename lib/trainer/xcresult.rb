@@ -79,9 +79,7 @@ module Trainer
       end
 
       def all_tests
-        return tests.map do |test|
-          test.all_subtests
-        end.flatten
+        return tests.map(&:all_subtests).flatten
       end
     end
 
@@ -133,9 +131,7 @@ module Trainer
       end
 
       def all_subtests
-        return subtests.map do |subtest|
-          subtest.all_subtests
-        end.flatten
+        return subtests.map(&:all_subtests).flatten
       end
     end
 

@@ -142,14 +142,14 @@ module Trainer
       test_refs = actions_invocation_record.actions.map do |action|
         action.action_result.tests_ref
       end.compact
-      ids = test_refs.map { |test_ref| test_ref.id }
+      ids = test_refs.map(&:id)
 
       # Maps ids into ActionTestPlanRunSummaries by executing xcresulttool to get JSON
       # containing specific information for each test summary,
       summaries = ids.map do |id|
         raw = `xcrun xcresulttool get --format json --path #{path} --id #{id}`
         json = JSON.parse(raw)
-        summary = Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
+        Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
       end
 
       # Converts the ActionTestPlanRunSummaries to data for junit generator
@@ -159,12 +159,8 @@ module Trainer
 
     def summaries_to_data(summaries, failures)
       # Gets flat list of all ActionTestableSummary
-      all_summaries = summaries.map do |summaries|
-        summaries.summaries
-      end.flatten
-      testable_summaries = all_summaries.map do |summary|
-        summary.testable_summaries
-      end.flatten
+      all_summaries = summaries.map(&:summaries).flatten
+      testable_summaries = all_summaries.map(&:testable_summaries).flatten
 
       # Maps ActionTestableSummary to rows for junit generator
       rows = testable_summaries.map do |testable_summary|
@@ -175,7 +171,7 @@ module Trainer
           target_name: testable_summary.target_name,
           test_name: testable_summary.name,
 
-          duration: all_tests.map{ |test| test.duration }.inject(:+),
+          duration: all_tests.map(&:duration).inject(:+),
           tests: all_tests.map do |test|
             test_row = {
               identifier: "#{test.parent.name}.#{test.name}",
@@ -185,13 +181,13 @@ module Trainer
               test_group: test.parent.name,
 
               # These don't map to anything but keeping empty strings
-              guid:""
+              guid: ""
             }
 
             # Tries to match failure on test case name
             # Example:
             # producing_target: "TestThisDude"
-            # test_case_name: "TestThisDude.testFailureJosh2()  
+            # test_case_name: "TestThisDude.testFailureJosh2()
             found_failure = failures.find do |failure|
               failure.test_case_name == test.identifier
             end
@@ -199,7 +195,7 @@ module Trainer
             # Set failure message if test status is "Failure" and a failure reference was found
             if test.test_status == "Failure" && found_failure
               message = found_failure.message
-              
+
               if found_failure.document_location_in_creating_workspace
                 file_path = found_failure.document_location_in_creating_workspace.url.gsub("file://", "")
                 message += " (#{file_path})"
