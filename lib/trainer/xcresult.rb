@@ -1,8 +1,10 @@
 module Trainer
   module XCResult
+    # Model attributes and relationships taken from running the following command:
+    # xcrun xcresulttool formatDescription
+
     class AbstractObject
       attr_accessor :type
-
       def initialize(data)
         self.type = data["_type"]["_name"]
       end
@@ -175,7 +177,7 @@ module Trainer
     #     + issues: ResultIssueSummaries
     #     + actions: [ActionRecord]
     #     + archive: ArchiveInfo?
-    class ActionsInvocationRecord
+    class ActionsInvocationRecord < AbstractObject
       attr_accessor :actions
       attr_accessor :issues
       def initialize(data)
@@ -183,6 +185,7 @@ module Trainer
           ActionRecord.new(action_data)
         end
         self.issues = ResultIssueSummaries.new(data["issues"])
+        super
       end
     end
 
@@ -197,7 +200,7 @@ module Trainer
     #     + runDestination: ActionRunDestinationRecord
     #     + buildResult: ActionResult
     #     + actionResult: ActionResult
-    class ActionRecord
+    class ActionRecord < AbstractObject
       attr_accessor :scheme_command_name
       attr_accessor :scheme_task_name
       attr_accessor :title
@@ -209,6 +212,7 @@ module Trainer
         self.title = data["title"]["_value"]
         self.build_result = ActionResult.new(data["buildResult"])
         self.action_result = ActionResult.new(data["actionResult"])
+        super
       end
     end
 
@@ -224,7 +228,7 @@ module Trainer
     #     + logRef: Reference?
     #     + testsRef: Reference?
     #     + diagnosticsRef: Reference?
-    class ActionResult
+    class ActionResult < AbstractObject
       attr_accessor :result_name
       attr_accessor :status
       attr_accessor :issues
@@ -241,6 +245,7 @@ module Trainer
         self.log_ref = Reference.new(data["logRef"]) if data["logRef"]
         self.tests_ref = Reference.new(data["testsRef"]) if data["testsRef"]
         self.diagnostics_ref = Reference.new(data["diagnosticsRef"]) if data["diagnosticsRef"]
+        super
       end
     end
 
@@ -249,12 +254,13 @@ module Trainer
     #   * Properties:
     #     + id: String
     #     + targetType: TypeDefinition?
-    class Reference
+    class Reference < AbstractObject
       attr_accessor :id
       attr_accessor :target_type
       def initialize(data)
         self.id = data["id"]["_value"]
         self.target_type = TypeDefinition.new(data["targetType"]) if data["targetType"]
+        super
       end
     end
 
@@ -263,12 +269,13 @@ module Trainer
     #   * Properties:
     #     + name: String
     #     + supertype: TypeDefinition?
-    class TypeDefinition
+    class TypeDefinition < AbstractObject
       attr_accessor :name
       attr_accessor :supertype
       def initialize(data)
         self.name = data["name"]["_value"]
         self.supertype = TypeDefinition.new(data["supertype"]) if data["supertype"]
+        super
       end
     end
 
@@ -277,12 +284,13 @@ module Trainer
     #   * Properties:
     #     + url: String
     #     + concreteTypeName: String
-    class DocumentLocation
+    class DocumentLocation < AbstractObject
       attr_accessor :url
       attr_accessor :concrete_type_name
       def initialize(data)
         self.url = data["url"]["_value"]
         self.concrete_type_name = data["concreteTypeName"]["_value"]
+        super
       end
     end
 
@@ -293,7 +301,7 @@ module Trainer
     #     + message: String
     #     + producingTarget: String?
     #     + documentLocationInCreatingWorkspace: DocumentLocation?
-    class IssueSummary
+    class IssueSummary < AbstractObject
       attr_accessor :issue_type
       attr_accessor :message
       attr_accessor :producing_target
@@ -303,6 +311,7 @@ module Trainer
         self.message = data["message"]["_value"]
         self.producing_target = data["producingTarget"]["_value"]
         self.document_location_in_creating_workspace = DocumentLocation.new(data["documentLocationInCreatingWorkspace"]) if data["documentLocationInCreatingWorkspace"]
+        super
       end
     end
 
@@ -313,7 +322,7 @@ module Trainer
     #     + errorSummaries: [IssueSummary]
     #     + testFailureSummaries: [TestFailureIssueSummary]
     #     + warningSummaries: [IssueSummary]
-    class ResultIssueSummaries
+    class ResultIssueSummaries < AbstractObject
       attr_accessor :analyzer_warning_summaries
       attr_accessor :error_summaries
       attr_accessor :test_failure_summaries
@@ -331,6 +340,7 @@ module Trainer
         self.warning_summaries = data["warningSummaries"]["_values"].map do |summary_data|
           IssueSummary.new(summary_data)
         end if data["warningSummaries"]
+        super
       end
     end
 

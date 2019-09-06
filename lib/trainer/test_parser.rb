@@ -36,6 +36,7 @@ module Trainer
           filename = File.basename(path).gsub(".plist", config[:extension])
           to_path = File.join(config[:output_directory], filename)
         else
+          # Remove .xcresult or .plist extension
           if path.end_with?(".xcresult")
             to_path = path.gsub(".xcresult", config[:extension])
           else
@@ -56,7 +57,7 @@ module Trainer
       path = File.expand_path(path)
       UI.user_error!("File not found at path '#{path}'") unless File.exist?(path)
 
-      if File.directory?(path)
+      if File.directory?(path) && path.end_with?(".xcresult")
         parse_xcresult(path)
       else
         self.file_content = File.read(path)
@@ -132,28 +133,32 @@ module Trainer
     end
 
     def parse_xcresult(path)
+      # Executes xcresulttool to get JSON format of the result bundle object
       result_bundle_object_raw = `xcrun xcresulttool get --format json --path #{path}`
       result_bundle_object = JSON.parse(result_bundle_object_raw)
 
+      # Parses JSON into ActionsInvocationRecord to find a list of all ids for ActionTestPlanRunSummaries
       actions_invocation_record = Trainer::XCResult::ActionsInvocationRecord.new(result_bundle_object)
-
       test_refs = actions_invocation_record.actions.map do |action|
         action.action_result.tests_ref
       end.compact
-
       ids = test_refs.map { |test_ref| test_ref.id }
+
+      # Maps ids into ActionTestPlanRunSummaries by executing xcresulttool to get JSON
+      # containing specific information for each test summary,
       summaries = ids.map do |id|
         raw = `xcrun xcresulttool get --format json --path #{path} --id #{id}`
         json = JSON.parse(raw)
-
         summary = Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
       end
 
+      # Converts the ActionTestPlanRunSummaries to data for junit generator
       failures = actions_invocation_record.issues.test_failure_summaries
       summaries_to_data(summaries, failures)
     end
 
     def summaries_to_data(summaries, failures)
+      # Gets flat list of all ActionTestableSummary
       all_summaries = summaries.map do |summaries|
         summaries.summaries
       end.flatten
@@ -161,9 +166,10 @@ module Trainer
         summary.testable_summaries
       end.flatten
 
+      # Maps ActionTestableSummary to rows for junit generator
       rows = testable_summaries.map do |testable_summary|
-
         all_tests = testable_summary.all_tests.flatten
+
         row = {
           project_path: testable_summary.project_relative_path,
           target_name: testable_summary.target_name,
@@ -175,14 +181,14 @@ module Trainer
               name: test.name,
               duration: test.duration,
               status: test.test_status,
-
-              # ???
-              identifier: "",
               test_group: test.parent.name,
+
+              # These don't map to anything but keeping empty strings
+              identifier: "",
               guid:" "
             }
 
-            # Need to match failure on test case name
+            # Tries to match failure on test case name
             # Example:
             # producing_target: "TestThisDude"
             # test_case_name: "TestThisDude.testFailureJosh2()  
@@ -190,8 +196,10 @@ module Trainer
               failure.test_case_name == "#{test.parent.name}.#{test.name}"
             end
 
+            # Set failure message if test status is "Failure" and a failure reference was found
             if test.test_status == "Failure" && found_failure
               message = found_failure.message
+              
               if found_failure.document_location_in_creating_workspace
                 file_path = found_failure.document_location_in_creating_workspace.url.gsub("file://", "")
                 message += " (#{file_path})"
@@ -210,11 +218,8 @@ module Trainer
           end
         }
 
-        row[:number_of_tests] = 0
-        row[:number_of_failures] = 0
-
-        # row[:number_of_tests] = row[:tests].count
-        # row[:number_of_failures] = row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
+        row[:number_of_tests] = row[:tests].count
+        row[:number_of_failures] = row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
 
         row
       end
