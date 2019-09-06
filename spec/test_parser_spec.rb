@@ -34,7 +34,7 @@ describe Trainer do
         end
       end
 
-      it "works as expected" do
+      it "works as expected with plist" do
         tp = Trainer::TestParser.new("spec/fixtures/Valid1.plist")
         expect(tp.data).to eq([
                                 {
@@ -84,6 +84,88 @@ describe Trainer do
                                   number_of_failures: 1
                                 }
                               ])
+      end
+
+      it "works as expected with xcresult" do
+        tp = Trainer::TestParser.new("spec/fixtures/Test.test_result.xcresult")
+        expect(tp.data).to eq([
+          {
+            :project_path=>"Test.xcodeproj", 
+            :target_name=>"TestUITests", 
+            :test_name=>"TestUITests", 
+            :duration=>16.05245804786682, 
+            :tests=>[
+              {
+                :identifier=>"TestUITests.testExample()", 
+                :name=>"testExample()", 
+                :duration=>16.05245804786682, 
+                :status=>"Success", 
+                :test_group=>"TestUITests", 
+                :guid=>""
+              }
+            ], 
+            :number_of_tests=>1, 
+            :number_of_failures=>0
+          }, 
+          {
+            :project_path=>"Test.xcodeproj", 
+            :target_name=>"TestThisDude", 
+            :test_name=>"TestThisDude", 
+            :duration=>0.5279300212860107, 
+            :tests=>[
+              {
+                :identifier=>"TestTests.testExample()", 
+                :name=>"testExample()", 
+                :duration=>0.0005381107330322266, 
+                :status=>"Success", 
+                :test_group=>"TestTests",
+                :guid=>""
+              }, 
+              {
+                :identifier=>"TestTests.testFailureJosh1()", 
+                :name=>"testFailureJosh1()", 
+                :duration=>0.006072044372558594, 
+                :status=>"Failure", 
+                :test_group=>"TestTests", 
+                :guid=>""
+              }, 
+              {
+                :identifier=>"TestTests.testPerformanceExample()", 
+                :name=>"testPerformanceExample()", 
+                :duration=>0.2661939859390259, 
+                :status=>"Success", 
+                :test_group=>"TestTests", 
+                :guid=>""
+              },
+              {
+                :identifier=>"TestThisDude.testExample()", 
+                :name=>"testExample()", 
+                :duration=>0.0004099607467651367, 
+                :status=>"Success", 
+                :test_group=>"TestThisDude", 
+                :guid=>""
+              },
+              {
+                :identifier=>"TestThisDude.testFailureJosh2()", 
+                :name=>"testFailureJosh2()", 
+                :duration=>0.001544952392578125, 
+                :status=>"Failure", 
+                :test_group=>"TestThisDude", 
+                :guid=>""
+              },
+              {
+                :identifier=>"TestThisDude.testPerformanceExample()", 
+                :name=>"testPerformanceExample()", 
+                :duration=>0.2531709671020508, 
+                :status=>"Success", 
+                :test_group=>"TestThisDude", 
+                :guid=>""
+              }
+            ], 
+            :number_of_tests=>6, 
+            :number_of_failures=>0
+          }
+        ])
       end
     end
   end

@@ -178,14 +178,14 @@ module Trainer
           duration: all_tests.map{ |test| test.duration }.inject(:+),
           tests: all_tests.map do |test|
             test_row = {
+              identifier: "#{test.parent.name}.#{test.name}",
               name: test.name,
               duration: test.duration,
               status: test.test_status,
               test_group: test.parent.name,
 
               # These don't map to anything but keeping empty strings
-              identifier: "",
-              guid:" "
+              guid:""
             }
 
             # Tries to match failure on test case name
@@ -193,7 +193,7 @@ module Trainer
             # producing_target: "TestThisDude"
             # test_case_name: "TestThisDude.testFailureJosh2()  
             found_failure = failures.find do |failure|
-              failure.test_case_name == "#{test.parent.name}.#{test.name}"
+              failure.test_case_name == test.identifier
             end
 
             # Set failure message if test status is "Failure" and a failure reference was found
