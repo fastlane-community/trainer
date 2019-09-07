@@ -8,6 +8,14 @@ module Trainer
       def initialize(data)
         self.type = data["_type"]["_name"]
       end
+
+      def fetch_value(data, key)
+        return (data[key] || {})["_value"]
+      end
+
+      def fetch_values(data, key)
+        return (data[key] || {})["_values"] || []
+      end
     end
 
     # - ActionTestPlanRunSummaries
@@ -17,7 +25,7 @@ module Trainer
     class ActionTestPlanRunSummaries < AbstractObject
       attr_accessor :summaries
       def initialize(data)
-        self.summaries = data["summaries"]["_values"].map do |summary_data|
+        self.summaries = fetch_values(data, "summaries").map do |summary_data|
           ActionTestPlanRunSummary.new(summary_data)
         end
         super
@@ -31,7 +39,7 @@ module Trainer
     class ActionAbstractTestSummary < AbstractObject
       attr_accessor :name
       def initialize(data)
-        self.name = data["name"]["_value"]
+        self.name = fetch_value(data, "name")
         super
       end
     end
@@ -44,7 +52,7 @@ module Trainer
     class ActionTestPlanRunSummary < ActionAbstractTestSummary
       attr_accessor :testable_summaries
       def initialize(data)
-        self.testable_summaries = data["testableSummaries"]["_values"].map do |summary_data|
+        self.testable_summaries = fetch_values(data, "testableSummaries").map do |summary_data|
           ActionTestableSummary.new(summary_data)
         end
         super
@@ -69,10 +77,10 @@ module Trainer
       attr_accessor :test_kind
       attr_accessor :tests
       def initialize(data)
-        self.project_relative_path = data["projectRelativePath"]["_value"]
-        self.target_name = data["targetName"]["_value"]
-        self.test_kind = data["testKind"]["_value"]
-        self.tests = data["tests"]["_values"].map do |tests_data|
+        self.project_relative_path = fetch_value(data, "projectRelativePath")
+        self.target_name = fetch_value(data, "targetName")
+        self.test_kind = fetch_value(data, "testKind")
+        self.tests = fetch_values(data, "tests").map do |tests_data|
           ActionTestSummaryIdentifiableObject.create(tests_data, self)
         end
         super
@@ -92,7 +100,7 @@ module Trainer
       attr_accessor :identifier
       attr_accessor :parent
       def initialize(data, parent)
-        self.identifier = data["identifier"]["_value"]
+        self.identifier = fetch_value(data, "identifier")
         self.parent = parent
         super(data)
       end
@@ -123,8 +131,8 @@ module Trainer
       attr_accessor :duration
       attr_accessor :subtests
       def initialize(data, parent)
-        self.duration = data["duration"]["_value"].to_f
-        self.subtests = data["subtests"]["_values"].map do |subtests_data|
+        self.duration = fetch_value(data, "duration").to_f
+        self.subtests = fetch_values(data, "subtests").map do |subtests_data|
           ActionTestSummaryIdentifiableObject.create(subtests_data, self)
         end
         super(data, parent)
@@ -152,11 +160,11 @@ module Trainer
       attr_accessor :failure_summaries_count
       attr_accessor :activity_summaries_count
       def initialize(data, parent)
-        self.test_status = data["testStatus"]["_value"]
-        self.duration = data["duration"]["_value"].to_f
-        self.performance_metrics_count = (data["performanceMetricsCount"] || {})["_value"]
-        self.failure_summaries_count = (data["failureSummariesCount"] || {})["_value"]
-        self.activity_summaries_count = (data["activitySummariesCount"] || {})["_value"]
+        self.test_status = fetch_value(data, "testStatus")
+        self.duration = fetch_value(data, "duration").to_f
+        self.performance_metrics_count = fetch_value(data, "performanceMetricsCount")
+        self.failure_summaries_count = fetch_value(data, "failureSummariesCount")
+        self.activity_summaries_count = fetch_value(data, "activitySummariesCount")
         super(data, parent)
       end
 
@@ -193,7 +201,7 @@ module Trainer
       attr_accessor :actions
       attr_accessor :issues
       def initialize(data)
-        self.actions = data["actions"]["_values"].map do |action_data|
+        self.actions = fetch_values(data, "actions").map do |action_data|
           ActionRecord.new(action_data)
         end
         self.issues = ResultIssueSummaries.new(data["issues"])
@@ -219,9 +227,9 @@ module Trainer
       attr_accessor :build_result
       attr_accessor :action_result
       def initialize(data)
-        self.scheme_command_name = data["schemeCommandName"]["_value"]
-        self.scheme_task_name = data["schemeTaskName"]["_value"]
-        self.title = data["title"]["_value"]
+        self.scheme_command_name = fetch_value(data, "schemeCommandName")
+        self.scheme_task_name = fetch_value(data, "schemeTaskName")
+        self.title = fetch_value(data, "title")
         self.build_result = ActionResult.new(data["buildResult"])
         self.action_result = ActionResult.new(data["actionResult"])
         super
@@ -249,8 +257,8 @@ module Trainer
       attr_accessor :tests_ref
       attr_accessor :diagnostics_ref
       def initialize(data)
-        self.result_name = data["resultName"]["_value"]
-        self.status = data["status"]["_value"]
+        self.result_name = fetch_value(data, "resultName")
+        self.status = fetch_value(data, "status")
         self.issues = ResultIssueSummaries.new(data["issues"])
 
         self.timeline_ref = Reference.new(data["timelineRef"]) if data["timelineRef"]
@@ -270,7 +278,7 @@ module Trainer
       attr_accessor :id
       attr_accessor :target_type
       def initialize(data)
-        self.id = data["id"]["_value"]
+        self.id = fetch_value(data, "id")
         self.target_type = TypeDefinition.new(data["targetType"]) if data["targetType"]
         super
       end
@@ -285,7 +293,7 @@ module Trainer
       attr_accessor :name
       attr_accessor :supertype
       def initialize(data)
-        self.name = data["name"]["_value"]
+        self.name = fetch_value(data, "name")
         self.supertype = TypeDefinition.new(data["supertype"]) if data["supertype"]
         super
       end
@@ -300,7 +308,7 @@ module Trainer
       attr_accessor :url
       attr_accessor :concrete_type_name
       def initialize(data)
-        self.url = data["url"]["_value"]
+        self.url = fetch_value(data, "url")
         self.concrete_type_name = data["concreteTypeName"]["_value"]
         super
       end
@@ -319,9 +327,9 @@ module Trainer
       attr_accessor :producing_target
       attr_accessor :document_location_in_creating_workspace
       def initialize(data)
-        self.issue_type = data["issueType"]["_value"]
-        self.message = data["message"]["_value"]
-        self.producing_target = (data["producingTarget"] || {})["_value"]
+        self.issue_type = fetch_value(data, "issueType")
+        self.message = fetch_value(data, "message")
+        self.producing_target = fetch_value(data, "producingTarget")
         self.document_location_in_creating_workspace = DocumentLocation.new(data["documentLocationInCreatingWorkspace"]) if data["documentLocationInCreatingWorkspace"]
         super
       end
@@ -340,18 +348,18 @@ module Trainer
       attr_accessor :test_failure_summaries
       attr_accessor :warning_summaries
       def initialize(data)
-        self.analyzer_warning_summaries = data["analyzerWarningSummaries"]["_values"].map do |summary_data|
+        self.analyzer_warning_summaries = fetch_values(data, "analyzerWarningSummaries").map do |summary_data|
           IssueSummary.new(summary_data)
-        end if data["analyzerWarningSummaries"]
-        self.error_summaries = data["errorSummaries"]["_values"].map do |summary_data|
+        end
+        self.error_summaries = fetch_values(data, "errorSummaries").map do |summary_data|
           IssueSummary.new(summary_data)
-        end if data["errorSummaries"]
-        self.test_failure_summaries = data["testFailureSummaries"]["_values"].map do |summary_data|
+        end
+        self.test_failure_summaries = fetch_values(data, "testFailureSummaries").map do |summary_data|
           TestFailureIssueSummary.new(summary_data)
-        end if data["testFailureSummaries"]
-        self.warning_summaries = data["warningSummaries"]["_values"].map do |summary_data|
+        end
+        self.warning_summaries = fetch_values(data, "warningSummaries").map do |summary_data|
           IssueSummary.new(summary_data)
-        end if data["warningSummaries"]
+        end
         super
       end
     end
@@ -364,7 +372,7 @@ module Trainer
     class TestFailureIssueSummary < IssueSummary
       attr_accessor :test_case_name
       def initialize(data)
-        self.test_case_name = data["testCaseName"]["_value"]
+        self.test_case_name = fetch_value(data, "testCaseName")
         super
       end
 
