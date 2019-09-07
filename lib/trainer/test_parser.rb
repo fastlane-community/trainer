@@ -23,6 +23,8 @@ module Trainer
       files += Dir["#{containing_dir}/*.xcresult/TestSummaries.plist"]
       files += Dir[containing_dir] if containing_dir.end_with?(".plist") # if it's the exact path to a plist file
       # Xcode 11
+      files += Dir["#{containing_dir}/**/Logs/Test/*.xcresult"]
+      files += Dir["#{containing_dir}/Test/*.xcresult"]
       files += Dir["#{containing_dir}/*.xcresult"]
 
       if files.empty?
@@ -132,9 +134,15 @@ module Trainer
       return group, name
     end
 
+    def execute_cmd(cmd)
+      output = `#{cmd}`
+      raise "Failed to execute - #{cmd}" unless $?.success?
+      return output
+    end
+
     def parse_xcresult(path)
       # Executes xcresulttool to get JSON format of the result bundle object
-      result_bundle_object_raw = `xcrun xcresulttool get --format json --path #{path}`
+      result_bundle_object_raw = execute_cmd("xcrun xcresulttool get --format json --path #{path}")
       result_bundle_object = JSON.parse(result_bundle_object_raw)
 
       # Parses JSON into ActionsInvocationRecord to find a list of all ids for ActionTestPlanRunSummaries
@@ -147,7 +155,7 @@ module Trainer
       # Maps ids into ActionTestPlanRunSummaries by executing xcresulttool to get JSON
       # containing specific information for each test summary,
       summaries = ids.map do |id|
-        raw = `xcrun xcresulttool get --format json --path #{path} --id #{id}`
+        raw = execute_cmd("xcrun xcresulttool get --format json --path #{path} --id #{id}")
         json = JSON.parse(raw)
         Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
       end
