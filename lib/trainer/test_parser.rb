@@ -153,7 +153,7 @@ module Trainer
       end
 
       # Converts the ActionTestPlanRunSummaries to data for junit generator
-      failures = actions_invocation_record.issues.test_failure_summaries
+      failures = actions_invocation_record.issues.test_failure_summaries || []
       summaries_to_data(summaries, failures)
     end
 
@@ -166,52 +166,39 @@ module Trainer
       rows = testable_summaries.map do |testable_summary|
         all_tests = testable_summary.all_tests.flatten
 
+        test_rows = all_tests.map do |test|
+          test_row = {
+            identifier: "#{test.parent.name}.#{test.name}",
+            name: test.name,
+            duration: test.duration,
+            status: test.test_status,
+            test_group: test.parent.name,
+
+            # These don't map to anything but keeping empty strings
+            guid: ""
+          }
+
+          # Set failure message if failure found
+          failure = test.find_failure(failures)
+          if failure
+            test_row[:failures] = [{
+              file_name: "",
+              line_number: 0,
+              message: "",
+              performance_failure: {},
+              failure_message: failure.failure_message
+            }]
+          end
+
+          test_row
+        end
+
         row = {
           project_path: testable_summary.project_relative_path,
           target_name: testable_summary.target_name,
           test_name: testable_summary.name,
-
           duration: all_tests.map(&:duration).inject(:+),
-          tests: all_tests.map do |test|
-            test_row = {
-              identifier: "#{test.parent.name}.#{test.name}",
-              name: test.name,
-              duration: test.duration,
-              status: test.test_status,
-              test_group: test.parent.name,
-
-              # These don't map to anything but keeping empty strings
-              guid: ""
-            }
-
-            # Tries to match failure on test case name
-            # Example:
-            # producing_target: "TestThisDude"
-            # test_case_name: "TestThisDude.testFailureJosh2()
-            found_failure = failures.find do |failure|
-              failure.test_case_name == test.identifier
-            end
-
-            # Set failure message if test status is "Failure" and a failure reference was found
-            if test.test_status == "Failure" && found_failure
-              message = found_failure.message
-
-              if found_failure.document_location_in_creating_workspace
-                file_path = found_failure.document_location_in_creating_workspace.url.gsub("file://", "")
-                message += " (#{file_path})"
-              end
-
-              test_row[:failures] = [{
-                file_name: "",
-                line_number: 0,
-                message: "",
-                performance_failure: {},
-                failure_message: message
-              }]
-            end
-
-            test_row
-          end
+          tests: test_rows
         }
 
         row[:number_of_tests] = row[:tests].count

@@ -163,6 +163,22 @@ module Trainer
       def all_subtests
         return [self]
       end
+
+      def find_failure(failures)
+        if self.test_status == "Failure"
+          # Tries to match failure on test case name
+          # Example:
+          # identifier: "TestThisDude/testFailureJosh2()"
+          # test_case_name: "TestThisDude.testFailureJosh2()""
+          sanitized_identifier = self.identifier.tr("/", ".")
+          found_failure = failures.find do |failure|
+            failure.test_case_name == sanitized_identifier
+          end
+          return found_failure
+        else
+          return nil
+        end
+      end
     end
 
     # - ActionsInvocationRecord
@@ -305,7 +321,7 @@ module Trainer
       def initialize(data)
         self.issue_type = data["issueType"]["_value"]
         self.message = data["message"]["_value"]
-        self.producing_target = data["producingTarget"]["_value"]
+        self.producing_target = (data["producingTarget"] || {})["_value"]
         self.document_location_in_creating_workspace = DocumentLocation.new(data["documentLocationInCreatingWorkspace"]) if data["documentLocationInCreatingWorkspace"]
         super
       end
@@ -350,6 +366,16 @@ module Trainer
       def initialize(data)
         self.test_case_name = data["testCaseName"]["_value"]
         super
+      end
+
+      def failure_message
+        new_message = self.message
+        if self.document_location_in_creating_workspace
+          file_path = self.document_location_in_creating_workspace.url.gsub("file://", "")
+          new_message += " (#{file_path})"
+        end
+
+        return new_message
       end
     end
   end
