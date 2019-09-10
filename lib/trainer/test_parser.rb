@@ -143,7 +143,7 @@ module Trainer
 
     def parse_xcresult(path)
       # Executes xcresulttool to get JSON format of the result bundle object
-      result_bundle_object_raw = execute_cmd("xcrun xcresulttool get --format json --path #{path}")
+      result_bundle_object_raw = execute_cmd("xcrun xcresulttool get --format json --path '#{path}'")
       result_bundle_object = JSON.parse(result_bundle_object_raw)
 
       # Parses JSON into ActionsInvocationRecord to find a list of all ids for ActionTestPlanRunSummaries
@@ -156,7 +156,7 @@ module Trainer
       # Maps ids into ActionTestPlanRunSummaries by executing xcresulttool to get JSON
       # containing specific information for each test summary,
       summaries = ids.map do |id|
-        raw = execute_cmd("xcrun xcresulttool get --format json --path #{path} --id #{id}")
+        raw = execute_cmd("xcrun xcresulttool get --format json --path '#{path}' --id #{id}")
         json = JSON.parse(raw)
         Trainer::XCResult::ActionTestPlanRunSummaries.new(json)
       end
