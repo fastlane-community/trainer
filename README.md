@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://github.com/KrauseFx/trainer/blob/master/LICENSE)
 [![Gem](https://img.shields.io/gem/v/trainer.svg?style=flat)](http://rubygems.org/gems/trainer)
 
-This is an alternative approach to generate JUnit files for your CI (e.g. Jenkins) without parsing the `xcodebuild` output, but using the Xcode `plist` files instead.
+This is an alternative approach to generate JUnit files for your CI (e.g. Jenkins) without parsing the `xcodebuild` output, but using the Xcode `plist` or `xcresult` files instead.
 
 Some Xcode versions has a known issue around not properly closing `stdout` ([Radar](https://openradar.appspot.com/27447948)), so you [can't use xcpretty](https://github.com/supermarin/xcpretty/issues/227).
 
@@ -81,13 +81,13 @@ cd [project]
 fastlane scan --derived_data_path "output_dir"
 ```
 
-#### Convert the plist files to junit
+#### Convert the plist or xcresult files to junit
 
 ```
 trainer
 ```
 
-You can also pass a custom directory containing the plist files
+You can also pass a custom directory containing the plist or xcresult files
 
 ```
 trainer --path ./something
