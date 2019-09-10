@@ -102,7 +102,8 @@ describe Trainer do
                                       status: "Success",
                                       test_group: "TestUITests",
                                       guid: ""
-                                    }],
+                                    }
+                                  ],
                                   number_of_tests: 1,
                                   number_of_failures: 0
                                 },

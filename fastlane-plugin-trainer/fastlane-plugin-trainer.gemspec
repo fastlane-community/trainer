@@ -1,4 +1,5 @@
 # coding: utf-8
+
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'fastlane/plugin/trainer/version'
@@ -6,14 +7,14 @@ require 'fastlane/plugin/trainer/version'
 Gem::Specification.new do |spec|
   spec.name          = 'fastlane-plugin-trainer'
   spec.version       = Fastlane::Trainer::VERSION
-  spec.author        = %q{KrauseFx}
-  spec.email         = %q{trainer@krausefx.com}
+  spec.author        = 'KrauseFx'
+  spec.email         = 'trainer@krausefx.com'
 
   spec.summary       = "Convert xcodebuild plist files to JUnit reports"
   spec.homepage      = "https://github.com/KrauseFx/trainer"
   spec.license       = "MIT"
 
-  spec.files         = Dir["lib/**/*"] + %w(README.md LICENSE)
+  spec.files         = Dir["lib/**/*"] + %w[README.md LICENSE]
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
