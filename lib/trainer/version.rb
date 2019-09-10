@@ -1,4 +1,4 @@
 module Trainer
-  VERSION = "0.8.2"
-  DESCRIPTION = "Convert xcodebuild plist files to JUnit reports"
+  VERSION = "0.9.0"
+  DESCRIPTION = "Convert xcodebuild plist and xcresult files to JUnit reports"
 end
