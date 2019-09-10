@@ -22,7 +22,7 @@ describe Trainer do
       it "raises an error if no files were found" do
         expect do
           Trainer::TestParser.auto_convert({ path: "bin" })
-        end.to raise_error("No test result files found in directory 'bin', make sure the file name ends with 'TestSummaries.plist'")
+        end.to raise_error("No test result files found in directory 'bin', make sure the file name ends with 'TestSummaries.plist' or '.xcresult'")
       end
     end
 

@@ -26,9 +26,10 @@ module Trainer
       files += Dir["#{containing_dir}/**/Logs/Test/*.xcresult"]
       files += Dir["#{containing_dir}/Test/*.xcresult"]
       files += Dir["#{containing_dir}/*.xcresult"]
+      files << containing_dir if File.extname(containing_dir) == ".xcresult"
 
       if files.empty?
-        UI.user_error!("No test result files found in directory '#{containing_dir}', make sure the file name ends with 'TestSummaries.plist'")
+        UI.user_error!("No test result files found in directory '#{containing_dir}', make sure the file name ends with 'TestSummaries.plist' or '.xcresult'")
       end
 
       return_hash = {}
