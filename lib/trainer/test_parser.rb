@@ -142,6 +142,9 @@ module Trainer
     end
 
     def parse_xcresult(path)
+      require 'shellwords'
+      path = Shellwords.escape(path)
+
       # Executes xcresulttool to get JSON format of the result bundle object
       result_bundle_object_raw = execute_cmd("xcrun xcresulttool get --format json --path #{path}")
       result_bundle_object = JSON.parse(result_bundle_object_raw)
