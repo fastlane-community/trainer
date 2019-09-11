@@ -36,7 +36,12 @@ module Trainer
       files.each do |path|
         if config[:output_directory]
           FileUtils.mkdir_p(config[:output_directory])
-          filename = File.basename(path).gsub(".plist", config[:extension])
+          # Remove .xcresult or .plist extension
+          if path.end_with?(".xcresult")
+            filename = File.basename(path).gsub(".xcresult", config[:extension])
+          else
+            filename = File.basename(path).gsub(".plist", config[:extension])
+          end
           to_path = File.join(config[:output_directory], filename)
         else
           # Remove .xcresult or .plist extension
