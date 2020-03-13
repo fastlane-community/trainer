@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'plist', ">= 3.1.0", "< 4.0.0"
   spec.add_dependency 'fastlane', '>= 2.25.0'
+  spec.add_dependency 'parallel', '>= 1.17.0'
 
   # Development only
   spec.add_development_dependency 'bundler'

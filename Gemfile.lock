@@ -3,6 +3,7 @@ PATH
   specs:
     trainer (0.9.1)
       fastlane (>= 2.25.0)
+      parallel (>= 1.17.0)
       plist (>= 3.1.0, < 4.0.0)
 
 GEM
@@ -246,6 +247,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-21
+  x86_64-darwin-20
 
 DEPENDENCIES
   bundler
