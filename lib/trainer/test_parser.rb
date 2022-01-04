@@ -171,10 +171,10 @@ module Trainer
 
       # Converts the ActionTestPlanRunSummaries to data for junit generator
       failures = actions_invocation_record.issues.test_failure_summaries || []
-      summaries_to_data(summaries, failures)
+      summaries_to_data(summaries, failures, actions_invocation_record.metrics)
     end
 
-    def summaries_to_data(summaries, failures)
+    def summaries_to_data(summaries, failures, metrics)
       # Gets flat list of all ActionTestableSummary
       all_summaries = summaries.map(&:summaries).flatten
       testable_summaries = all_summaries.map(&:testable_summaries).flatten
@@ -218,9 +218,9 @@ module Trainer
           tests: test_rows
         }
 
-        row[:number_of_tests] = row[:tests].count
-        row[:number_of_failures] = row[:tests].find_all { |a| (a[:failures] || []).count > 0 }.count
-
+        row[:number_of_tests] = metrics.tests_count || 0
+        row[:number_of_failures] = metrics.tests_failed_count || 0
+        row[:number_of_skipped] = metrics.tests_skipped_count || 0
         row
       end
 

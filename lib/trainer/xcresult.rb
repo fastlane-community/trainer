@@ -211,13 +211,17 @@ module Trainer
     #     + actions: [ActionRecord]
     #     + archive: ArchiveInfo?
     class ActionsInvocationRecord < AbstractObject
+      attr_accessor :metrics
       attr_accessor :actions
       attr_accessor :issues
+      attr_accessor :metrics
       def initialize(data)
+        self.metrics = ResultMetrics.new(data["metrics"])
         self.actions = fetch_values(data, "actions").map do |action_data|
           ActionRecord.new(action_data)
         end
         self.issues = ResultIssueSummaries.new(data["issues"])
+        self.metrics = ResultMetrics.new(data["metrics"])
         super
       end
     end
@@ -264,6 +268,7 @@ module Trainer
     class ActionResult < AbstractObject
       attr_accessor :result_name
       attr_accessor :status
+      attr_accessor :metrics
       attr_accessor :issues
       attr_accessor :timeline_ref
       attr_accessor :log_ref
@@ -273,6 +278,8 @@ module Trainer
         self.result_name = fetch_value(data, "resultName")
         self.status = fetch_value(data, "status")
         self.issues = ResultIssueSummaries.new(data["issues"])
+
+        self.metrics = ResultMetrics.new(data["metrics"])
 
         self.timeline_ref = Reference.new(data["timelineRef"]) if data["timelineRef"]
         self.log_ref = Reference.new(data["logRef"]) if data["logRef"]
@@ -374,6 +381,33 @@ module Trainer
           IssueSummary.new(summary_data)
         end
         super
+      end
+    end
+
+    # - ResultMetrics
+    #   * Kind: object
+    #   * Properties:
+    #     + analyzerWarningCount: Int
+    #     + errorCount: Int
+    #     + testsCount: Int
+    #     + testsFailedCount: Int
+    #     + testsSkippedCount: Int
+    #     + warningCount: Int
+    class ResultMetrics < AbstractObject
+      attr_accessor :analyzer_warning_count
+      attr_accessor :error_count
+      attr_accessor :tests_count
+      attr_accessor :tests_failed_count
+      attr_accessor :tests_skipped_count
+      attr_accessor :warning_count
+
+      def initialize(data)
+        self.analyzer_warning_count = fetch_value(data, "analyzerWarningCount").to_i
+        self.error_count = fetch_value(data, "errorCount").to_i
+        self.tests_count = fetch_value(data, "testsCount").to_i
+        self.tests_failed_count = fetch_value(data, "testsFailedCount").to_i
+        self.tests_skipped_count = fetch_value(data, "testsSkippedCount").to_i
+        self.warning_count = fetch_value(data, "warningCount").to_i
       end
     end
 
