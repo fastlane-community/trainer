@@ -4,6 +4,7 @@ require 'trainer/version'
 require 'trainer/options'
 require 'trainer/test_parser'
 require 'trainer/junit_generator'
+require 'trainer/test_result'
 require 'trainer/xcresult'
 
 module Trainer
