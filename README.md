@@ -1,3 +1,9 @@
+As of https://github.com/fastlane/fastlane/pull/19624 (Nov 2021) - trainer was brought within _fastlane_ and work halted on this repository.
+
+ * This repo is now archived - all changes should be made to [fastlane/fastlane (trainer)](https://github.com/fastlane/fastlane/tree/master/trainer)
+
+---
+
 # trainer
 
 [![Twitter: @KrauseFx](https://img.shields.io/badge/contact-@KrauseFx-blue.svg?style=flat)](https://twitter.com/KrauseFx)
